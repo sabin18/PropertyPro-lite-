@@ -8,7 +8,7 @@ chai.use(chaiHttp);
 
 // Test the route of flags
 let userToken;
-before('Create a user who will apply for loan', (done) => {
+before('Create a user who will create property ', (done) => {
   const users = {
     id: 3,
     email: 'ake330@gmail.com',
