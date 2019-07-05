@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/sabin18/PropertyPro-lite-.svg?branch=develop)](https://travis-ci.org/sabin18/PropertyPro-lite-)
+
 # PropertyPro-lite-
 #### Property Pro Lite is a platform where people can create and/or search properties for sale or rent. 
 
