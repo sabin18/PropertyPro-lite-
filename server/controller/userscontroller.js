@@ -87,9 +87,7 @@ class userController {
         status: 400,
         error: "No user found with that id"
       });
-    }
-    
-    
+    } 
   }
 
   // Login data processing
@@ -157,7 +155,6 @@ class userController {
           message: 'password updated  succesfully',
         });
       }
-
       res.status(400).json({
         status: 400,
         error: "can't find user with that email"
