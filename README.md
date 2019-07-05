@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/sabin18/PropertyPro-lite-.svg?branch=develop)](https://travis-ci.org/sabin18/PropertyPro-lite-)  [![Coverage Status](https://coveralls.io/repos/github/sabin18/PropertyPro-lite-/badge.svg?branch=ch-other-package-167106462)](https://coveralls.io/github/sabin18/PropertyPro-lite-?branch=ch-other-package-167106462)
+[![Build Status](https://travis-ci.org/sabin18/PropertyPro-lite-.svg?branch=develop)](https://travis-ci.org/sabin18/PropertyPro-lite-)  [![Coverage Status](https://coveralls.io/repos/github/sabin18/PropertyPro-lite-/badge.svg?branch=ch-other-package-167106462)](https://coveralls.io/github/sabin18/PropertyPro-lite-?branch=ch-other-package-167106462) [![Maintainability](https://api.codeclimate.com/v1/badges/fb44cc2ffca1613e1e16/maintainability)](https://codeclimate.com/github/sabin18/PropertyPro-lite-/maintainability)
         
 # PropertyPro-lite-
 #### Property Pro Lite is a platform where people can create and/or search properties for sale or rent. 
