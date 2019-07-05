@@ -90,6 +90,7 @@ class userController {
     } 
   }
 
+
   // Login functions
   static login(req, res) {
     const { email, password } = req.body;
