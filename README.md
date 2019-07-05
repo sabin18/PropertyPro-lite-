@@ -4,6 +4,7 @@
 #### Property Pro Lite is a platform where people can create and/or search properties for sale or rent. 
 
 - HOSTED UI link: https://sabin18.github.io/PropertyPro-lite-/UI/
+- HOSTED API link: https://propertypro-lite19.herokuapp.com/
 
 ## PROJECT DESCRIPTION
 
