@@ -12,7 +12,6 @@
   "engines": {
     "node": "11.7.0"
   },
-  
   "author": "roger sabin",
   "license": "ISC",
   "keywords": [],
