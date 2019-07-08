@@ -18,6 +18,14 @@ app.get('/', (req, res) => {
     });
   });
 
+app.use('*',(req,res)=>{
+  res.status(400).json({
+    status: 400,
+    message: "Sorry this router doesn't exist !",
+  });
+});
+
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log('Property Pro Lite  server On....'));
 
