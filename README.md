@@ -1,7 +1,10 @@
+[![Build Status](https://travis-ci.org/sabin18/PropertyPro-lite-.svg?branch=develop)](https://travis-ci.org/sabin18/PropertyPro-lite-)  [![Coverage Status](https://coveralls.io/repos/github/sabin18/PropertyPro-lite-/badge.svg?branch=ch-other-package-167106462)](https://coveralls.io/github/sabin18/PropertyPro-lite-?branch=ch-other-package-167106462) [![Maintainability](https://api.codeclimate.com/v1/badges/fb44cc2ffca1613e1e16/maintainability)](https://codeclimate.com/github/sabin18/PropertyPro-lite-/maintainability)
+        
 # PropertyPro-lite-
 #### Property Pro Lite is a platform where people can create and/or search properties for sale or rent. 
 
 - HOSTED UI link: https://sabin18.github.io/PropertyPro-lite-/UI/
+- HOSTED API link: https://propertypro-lite19.herokuapp.com/
 
 ## PROJECT DESCRIPTION
 
@@ -43,7 +46,25 @@ To get the project up and running on your local machine, please follow these ins
   - flag/report a posted AD as fraudulent. 
   - User can add multiple pictures to a posted ad. 
   - The application should display a Google Map with Marker showing the red-flag or intervention location. 
-
+  
+## THE END POINTS OF THE PROJECT
+ 
+| HTTP MEHOD | ENDPOINTS                       | ACCESS                       | DESCRIPTION                           |
+|------------|---------------------------------|------------------------------|---------------------------------------|
+| POST       | /api/v1/auth/signup             | public                       | create an account                     |
+| POST       | /api/v1/auth/signin             | public                       | login to the app                      |
+| POST       | /api/v1/property/               | private(user)                | create property adrvert               |
+| GET        | /api/v1/property/               | public                       | get all property                      |
+| GET        | /api/v1/property/id             | public                       | get specific property                 |
+| PATCH      | /api/v1/property/id             | public                       | Edit property                         |
+| PATCH      | /api/v1/property/sold           | public                       | mark property as sold                 |
+| POST       | /api/v1/property_id/flags       | public                       | post a flag                           |
+| GET        | /api/v1/flags                   | public                       | get all flags                         |
+| GET        | /api/v1/property/:id/flags      | public                       | get flags of specific property        |
+| GET        | /api/v1/flags/id                | public                       | get a specific flags                  |
+| GET        | /api/v1/users                   | public                       | get all users                         |
+| GET        | /api/v1/users/id                | public                       | get a specific user                   |
+  
 ## Frontend
 
  - HTML
@@ -56,6 +77,7 @@ To get the project up and running on your local machine, please follow these ins
  - Mocha
  - Chai
  ## OTHER TOOLS USED IN THIS PROJECT
+ 
 
 - Linter
  #### ESLint - Linter Tool
@@ -74,4 +96,4 @@ To get the project up and running on your local machine, please follow these ins
 Project is currently being managed with Pivotal Tracker, a project management tool. You can find the stories on the Quick_credit Pivotal Tracker Board
 ```
 - Author:
- ### izere Roger Sabin
+ ### izere Roger Sabin 
