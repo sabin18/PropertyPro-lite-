@@ -46,7 +46,25 @@ To get the project up and running on your local machine, please follow these ins
   - flag/report a posted AD as fraudulent. 
   - User can add multiple pictures to a posted ad. 
   - The application should display a Google Map with Marker showing the red-flag or intervention location. 
-
+  
+## THE END POINTS OF THE PROJECT
+ 
+| HTTP MEHOD | ENDPOINTS                       | ACCESS                       | DESCRIPTION                           |
+|------------|---------------------------------|------------------------------|---------------------------------------|
+| POST       | /api/v1/auth/signup             | public                       | create an account                     |
+| POST       | /api/v1/auth/signin             | public                       | login to the app                      |
+| POST       | /api/v1/property/               | private(user)                | create property adrvert               |
+| GET        | /api/v1/property/               | public                       | get all property                      |
+| GET        | /api/v1/property/id             | public                       | get specific property                 |
+| PATCH      | /api/v1/property/id             | public                       | Edit property                         |
+| PATCH      | /api/v1/property/sold           | public                       | mark property as sold                 |
+| POST       | /api/v1/property_id/flags       | public                       | post a flag                           |
+| GET        | /api/v1/flags                   | public                       | get all flags                         |
+| GET        | /api/v1/property/:id/flags      | public                       | get flags of specific property        |
+| GET        | /api/v1/flags/id                | public                       | get a specific flags                  |
+| GET        | /api/v1/users                   | public                       | get all users                         |
+| GET        | /api/v1/users/id                | public                       | get a specific user                   |
+  
 ## Frontend
 
  - HTML
@@ -59,6 +77,7 @@ To get the project up and running on your local machine, please follow these ins
  - Mocha
  - Chai
  ## OTHER TOOLS USED IN THIS PROJECT
+ 
 
 - Linter
  #### ESLint - Linter Tool
