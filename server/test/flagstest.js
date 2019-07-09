@@ -8,7 +8,7 @@ chai.use(chaiHttp);
 
 // Test the route of flags
 let userToken;
-before('Create a user who will apply for loan', (done) => {
+before('Create a user who will create property advert', (done) => {
   const users = {
     id: 3,
     email: 'ake330@gmail.com',
@@ -146,7 +146,7 @@ describe('flags routes test', () => {
       .end((err, res) => {
         res.should.have.property('status').eql(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message').eql("that property doesn't exist");
+        res.body.should.have.property('error').eql("that property doesn't exist");
         done();
       });
   });
@@ -194,7 +194,7 @@ describe('flags routes test', () => {
       .end((err, res) => {
         res.should.have.property('status').eql(400);
         res.body.should.be.a('object');
-        res.body.should.have.property('message').eql('this property have been sold !');
+        res.body.should.have.property('error').eql('this property have been sold !');
         done();
       });
   });
