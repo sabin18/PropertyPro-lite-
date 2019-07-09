@@ -36,6 +36,7 @@ only screen and (max-width: 600px) {
     border: 2px solid #ddd;
     font-weight:bold;
   }
+  
   td:nth-of-type(1):before { content: "Date"; }
   td:nth-of-type(2):before { content: "Ownrer"; }
   td:nth-of-type(3):before { content: "Owner Phone"; }
@@ -49,6 +50,7 @@ only screen and (max-width: 600px) {
   td:nth-of-type(11):before { content: "Mark";}
   td:nth-of-type(12):before { content: "Delete";}
 }
+
 
 label{
      color:white;
