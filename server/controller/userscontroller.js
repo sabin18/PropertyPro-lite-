@@ -5,6 +5,8 @@ import users from '../models/user';
 import mymodel from '../models/user';
 import Schema from '../helpers/inputvalidation';
 
+const userfailed = (res, status, error) => res.status(status).send({ status, error });
+const usersuccess = (res, status, message,data) => res.status(status).send({ status, message,data});
 
 class userController {
   static createUser(req, res) {
@@ -41,11 +43,7 @@ class userController {
       }); 
       const checkemail= mymodel.userEmail(email); 
       if (checkemail) {
-        return res.status(400).json({
-          status: 400,
-          error: 'email already exist please use another email!'
-        });
-      
+        return userfailed(res,400,'email already exist please use another email!')
       }
       mymodel.signupuser(req.body);
 
@@ -65,11 +63,8 @@ class userController {
   }
 
   static getuser(req, res) {
-    return res.json({
-      status: 200,
-      message: 'List of all users',
-      user: users,
-    });
+    return usersuccess(res,200,'List of all users',users)
+    
   }
 
   // get user by id
@@ -77,16 +72,10 @@ class userController {
     const { id } = req.params;
     const user = mymodel.getuser(id);
     if (user) {
-      return res.status(200).json({
-        message: 'one user found',
-        user: user,
-      });
+      return usersuccess(res,200,'one user found ',user)
     }
     else{
-      return res.status(400).json({
-        status: 400,
-        error: "No user found with that id"
-      });
+      return userfailed(res,400,'No user found with that id')
     } 
   }
 
@@ -96,10 +85,7 @@ class userController {
     const { email, password } = req.body;
     const specificUser = mymodel.userEmail(email);
     if (!specificUser) {
-      return res.status(400).json({
-        status: 400,
-        error: "No user with that email !"
-      });
+      return userfailed(res,400,'No user with that email !')
     } if (specificUser) {
       if (passwordHash.verify(password,specificUser.password)) {
         const {
@@ -156,10 +142,7 @@ class userController {
           message: 'password updated  succesfully',
         });
       }
-      res.status(400).json({
-        status: 400,
-        error: "can't find user with that email"
-      });
+      return userfailed(res,400,"can't find user with that email")
     }
     
   }
