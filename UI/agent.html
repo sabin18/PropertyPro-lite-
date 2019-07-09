@@ -33,7 +33,7 @@
 <br>
 <br>
 <div class="content">
-<input type="text" pattern="\d+(\.\d{2})?" id="myInput" onkeyup="searchdate()" placeholder="Search property by date.." title="Type in a name" required="number">
+<input type="text" pattern="^(0?[1-9]|[12][0-9]|3[01])$" title="number only" id="myInput" onkeyup="searchdate()" placeholder="Search property by date.. ex:(12/06/219)">
 <table id="myTable">
   <tr ><th colspan="12"><h2 class="table-header">ALL YOUR PROPERTIES<h2></th></tr>
   <tr>
