@@ -3,14 +3,12 @@ import flags from '../models/flags';
 import Schema from '../helpers/inputvalidation';
 import model from '../models/property';
 import flag from '../models/flags';
-
-const flagfailed = (res, status, error) => res.status(status).send({ status, error });
-const flagsuccess = (res, status, message,data) => res.status(status).send({ status, message,data});
+import response from '../helpers/response';
 
 class flagsController {
 
   static getflags(req, res) {
-    return flagsuccess(res,200,'List of all flags',flags)
+    return response.success(res,200,'List of all flags',flags)
     
   }
   
@@ -31,14 +29,14 @@ class flagsController {
       const getproperty = model.findOne(property_id);
       if (getproperty) {
         if (getproperty.status=='sold') {
-          return flagfailed(res,400,'this property have been sold !')
+          return  response.failed(res,400,'this property have been sold !')
         }
         const createdflag = flag.createRepayments(req.body, property_id);
-        return flagsuccess(res,200,'your flag have submit successfully ',createdflag)
+        return response.success(res,200,'your flag have submit successfully ',createdflag)
       
       }
       else{
-        return flagfailed(res,400,"that property doesn't exist")
+        return response.failed(res,400,"that property doesn't exist")
       
     }
   }
@@ -49,11 +47,11 @@ class flagsController {
     const { id } = req.params;
     const getflag = flag.findOneflags(id);
     if (getflag.length>=1) {
-      return flagsuccess(res,200,'flag found',getflag)
+      return response.success(res,200,'flag found',getflag)
      
     }
     else{
-     return flagfailed(res,400,"no flag found with that property id")
+     return response.failed(res,400,"no flag found with that property id")
   
   }
 }
@@ -64,10 +62,10 @@ static Oneflag(req, res) {
   const findflag = flag.getOne(id);
 
   if (findflag) {
-    return flagsuccess(res,200,'flag found',findflag)
+    return response.success(res,200,'flag found',findflag)
     
   }
-  return flagfailed(res,400,"could not find that flag")
+  return response.failed(res,400,"could not find that flag")
 
   
 }
