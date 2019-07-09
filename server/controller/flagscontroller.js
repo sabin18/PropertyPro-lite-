@@ -4,15 +4,14 @@ import Schema from '../helpers/inputvalidation';
 import model from '../models/property';
 import flag from '../models/flags';
 
+const flagfailed = (res, status, error) => res.status(status).send({ status, error });
+const flagsuccess = (res, status, message,data) => res.status(status).send({ status, message,data});
 
 class flagsController {
 
   static getflags(req, res) {
-    return res.status(200).json({
-      status: 200,
-      message: 'List of all flags',
-      flags,
-    });
+    return flagsuccess(res,200,'List of all flags',flags)
+    
   }
   
   // create flag function
@@ -32,24 +31,15 @@ class flagsController {
       const getproperty = model.findOne(property_id);
       if (getproperty) {
         if (getproperty.status=='sold') {
-          return res.status(400).json({
-            status: 400,
-            message: 'this property have been sold !',
-          });
-          
+          return flagfailed(res,400,'this property have been sold !')
         }
         const createdflag = flag.createRepayments(req.body, property_id);
-        return res.status(200).json({
-          status: 200,
-          message: 'your flag have submit successfully ',
-          createdflag,
-        });
+        return flagsuccess(res,200,'your flag have submit successfully ',createdflag)
+      
       }
       else{
-      return res.status(400).json({
-        status: 400,
-        message: "that property doesn't exist",
-      });
+        return flagfailed(res,400,"that property doesn't exist")
+      
     }
   }
 }
@@ -59,17 +49,12 @@ class flagsController {
     const { id } = req.params;
     const getflag = flag.findOneflags(id);
     if (getflag.length>=1) {
-       return res.status(200).json({
-        status:200, 
-        message: 'flag found',
-        getflag,
-      });
+      return flagsuccess(res,200,'flag found',getflag)
+     
     }
     else{
-    res.status(400).json({
-      status: 400,
-      error: 'no flag found with that property id',
-    });
+     return flagfailed(res,400,"no flag found with that property id")
+  
   }
 }
 
@@ -79,16 +64,11 @@ static Oneflag(req, res) {
   const findflag = flag.getOne(id);
 
   if (findflag) {
-    return res.status(200).json({
-      status: 200,
-      message: 'flag found',
-      findflag,
-    });
+    return flagsuccess(res,200,'flag found',findflag)
+    
   }
-  res.status(400).json({
-    status: 400,
-    error: 'could not find that flag',
-  });
+  return flagfailed(res,400,"could not find that flag")
+
   
 }
 
