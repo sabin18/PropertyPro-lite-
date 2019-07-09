@@ -8,7 +8,9 @@ chai.use(chaiHttp);
 
 // Test the route of flags
 let userToken;
+
 before('Create a user who will create property advert', (done) => {
+
   const users = {
     id: 3,
     email: 'ake330@gmail.com',
