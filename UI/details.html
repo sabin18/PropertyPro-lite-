@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PropertyPro-lite</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<script src="js/function.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="menu">
+<div class="topnav" id="myTopnav">
+  <a href="index.html" class="active">Home</a>
+  <div class="dropdown">
+    <button class="dropbtn">Property types
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <a href="property_types.html">2 bedroom</a>
+      <a href="property_types.html">3 bedroom</a>
+      <a href="property_types.html">4 bedroom</a>
+      <a href="property_types.html">Mini flat</a>
+    </div>
+  </div>
+  <a href="#contact">Contact</a>
+  <a href="#about">About</a>
+  <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+    <i class="fa fa-bars"></i>
+  </a>
+</div>
+  <div class="topnav-right">
+    <p><input type="button" value="Login" class="button2" onclick="window.location.href='login.html'"/></p>
+    <p><input type="button" value="Sign up" class="button2" onclick="window.location.href='signup.html'"/></p>
+  </div>
+</div>
+<br>
+<br>
+<div class="content">
+<body>
+<br>
+<h1>Property details</h1>
+<div class="col-container">
+ <div class="col1">
+<body>
+<h1>Property images view</h1>
+<div class="container">
+  <div class="mySlides">
+    <div class="numbertext">1 / 6</div>
+    <img src="images/house1.jpeg">
+  </div>
+  <div class="mySlides">
+    <div class="numbertext">2 / 6</div>
+    <img src="images/bedroom2.jpg">
+  </div>
+  <div class="mySlides">
+    <div class="numbertext">3 / 6</div>
+    <img src="images/inside1.jpg">
+  </div>  
+  <div class="mySlides">
+    <div class="numbertext">4 / 6</div>
+    <img src="images/swimmingpool3.jpg">
+  </div>
+  <div class="mySlides">
+    <div class="numbertext">5 / 6</div>
+    <img src="images/cooking.jpg">
+  </div> 
+  <div class="mySlides">
+    <div class="numbertext">6 / 6</div>
+    <img src="images/washroom.jpg">
+  </div>  
+  <a class="prev" onclick="plusSlides(-1)">Prev</a>
+  <a class="next" onclick="plusSlides(1)">Next</a>
+  <div class="caption-container">
+    <p id="caption"></p>
+  </div>
+  <div class="row">
+    <div class="column">
+      <img class="demo cursor" src="images/house1.jpeg" onclick="currentSlide(1)" alt="Outside view">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="images/bedroom2.jpg" onclick="currentSlide(2)" alt="Bedroom">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="images/inside1.jpg" onclick="currentSlide(3)" alt="Inside view">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="images/swimmingpool3.jpg" onclick="currentSlide(4)" alt="Swimmingpool">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="images/cooking.jpg" onclick="currentSlide(5)" alt="Cooking room">
+    </div>    
+    <div class="column">
+      <img class="demo cursor" src="images/washroom.jpg" onclick="currentSlide(6)" alt="Washroom">
+    </div>
+  </div>
+</div>
+<script>
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("demo");
+  var captionText = document.getElementById("caption");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+  captionText.innerHTML = dots[slideIndex-1].alt;
+}
+</script> 
+  </div>
+  <div class="col1" >
+    <h1>property data</h1>
+    <table id="DetailsTable">
+       <tr>
+          <tr ><th colspan="2"><h2>property details<h2></th></tr>
+       </tr>
+        <tr>
+          <td><h4 ><b>BEDROOMS:</b></h4></td>
+          <td><h4><b>3</b></h4 ></td>
+      </tr>
+      <tr>
+          <td><h4><b>WASHROOM:</b></h4></td>
+          <td><h4><b>2</b></h4 ></td>
+      </tr>
+      <tr>
+          <td><h4><b>PRICE:</b></h4></td>
+          <td><h4><b>$2000</b></h4></td>
+      </tr>
+      <tr>
+          <td><h4><b>LOCATION:</b></h4></td>
+          <td><h4><b>KIGALI</b></h4></td>
+      </tr> 
+      <tr>
+          <td><h4><b>OWNER PHONE:</b></h4></td>
+          <td><h4><b>0789647734</b></h4></td>
+      </tr>    
+      </table>
+  </div>
+  <div class="col1">
+    <h1 style="text-align:center">View on google map</h1>
+    <div class="mapouter"><div class="gmap_canvas"><iframe width="527" height="552" id="gmap_canvas" src="https://maps.google.com/maps?q=Bella%20Villa%20Apartments&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://www.pureblack.de"></a></div><style>.mapouter{position:relative;text-align:right;height:552px;width:527px;}.gmap_canvas {overflow:hidden;background:none!important;height:552px;width:527px;}</style></div>
+</body>
+<div class="footer">
+  <p>copyright 2019 Design by izere roger sabin</p>
+</div>
+</html>
