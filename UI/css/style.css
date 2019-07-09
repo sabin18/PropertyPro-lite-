@@ -7,7 +7,7 @@ body {
   float: right;
 }
 h1 {
-  font-size:30px;
+  font-size:22px;
   font-weight: bold;
   text-transform: capitalize;
   text-shadow: -1px -1px 1px #aaa,
@@ -16,10 +16,22 @@ h1 {
                0px 0px 1px rgba(0,0,0,0.1);
   text-align: center;
 }
+
+h2 {
+  font-size:22px;
+  font-weight: bold;
+  color: white;
+  text-transform: capitalize;
+  text-shadow: -1px -1px 1px white,
+               0px 2px 1px rgba(0,0,0,0.9),
+               2px 2px 1px rgba(0,0,0,0.9),
+               0px 0px 1px rgba(0,0,0,0.9);
+  text-align: center;
+}
 .content{
   padding-left:10px; 
   width:100%;
-   margin-bottom:5%;
+  margin-bottom:5%;
 }
 .menu {
   overflow:show;
@@ -101,7 +113,7 @@ h1 {
   display: block;
 }
 .property {
-  box-shadow: 0 10px 8px 0 rgba(0, 0, 0, 0.6);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
   max-width: 300px;
   margin: auto;
   text-align: center;
@@ -114,22 +126,11 @@ h1 {
   color:black;
   font-size: 25px;
 }
-#single_product { float: left; margin-left: 30px; padding: 20px; margin-bottom:3%;}
+#single_product { float:left;padding-left:5%;margin-bottom:3%;}
 #single_product img {border: 1px solid black;}
 
 
-.property button {
-  border: none;
-  outline: 0;
-  padding: 12px 6px;
-  color: white;
-  background-color:#0f1934;
-  text-align: center;
-  cursor: pointer;
-  width: 90%;
-  font-size: 18px;
-  border-radius:13px;
-}
+
 .button{
 
 border: none;
@@ -323,6 +324,9 @@ img {
   text-align:center;
   color:white;
 }
+*:focus {
+    outline: none;
+}
 
 #myInput {
   background-image: url(../images/searchicon.gif);
@@ -426,7 +430,7 @@ img {
   padding-bottom:12%;
   margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
   border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  width: 50%; /* Could be more or less, depending on screen size */
 }
 .container5 {
   padding: 16px;
@@ -527,6 +531,34 @@ input[type=text5]:focus,[type=password]:focus{
     margin-right: 0;
 }
 .button1:hover {
+  background-color:green;
+  color: white;
+}
+
+.submitbutton {
+  background-color:#0f1934; 
+  border: 1;
+  width:100%;
+  color: white;
+  padding: 12px 18px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  margin: 3px 3px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 6px;
+
+}
+.submitbutton:first-child {
+    margin-left: 0;
+}
+.submitbutton:last-child {
+    margin-right: 0;
+}
+.submitbutton:hover {
   background-color:green;
   color: white;
 }
@@ -734,7 +766,7 @@ hr {
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 640px) {
   .topnav a:not(:first-child), .dropdown .dropbtn {
     display: none;
   }
@@ -744,7 +776,7 @@ hr {
   }
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 640px) {
   .topnav.responsive {position: relative;}
   .topnav.responsive .icon {
     position: absolute;
@@ -774,6 +806,30 @@ hr {
     display: block;
   }
 }
+@media screen and (max-width: 360px) {
+  .content {
+    width:100%;
+    margin-left:1px;
+    padding-top: 10px;
+}
+
+}
+@media screen and (max-width: 360px) {
+ #single_product { float: left; margin-left: 12px; padding: 25px; margin-bottom:3%;}
+
+}
+
+@media screen and (max-width: 600px) {
+  .content {
+    width:100%;
+    margin-left:35px;
+    margin-right: 10px;
+    padding-top: 1px;
+    text-align:center;
+  }
+
+}
+
 
 @media screen and (max-width: 360px) {
   .topnav.responsive {position: relative;}
