@@ -99,7 +99,7 @@ describe('property routes test', () => {
       .set({type:'2 bedroom'})
       .end((err, res) => {
         res.should.have.property('status').eql(404);
-        res.body.should.have.property('message').eql("can't find any property");
+        res.body.should.have.property('error').eql("can't find any property");
         res.body.should.be.a('object');
         done();
       });
