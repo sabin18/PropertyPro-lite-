@@ -80,7 +80,8 @@ class userController {
     } 
   }
 
-  // Login data processing
+
+  // Login functions
   static login(req, res) {
     const { email, password } = req.body;
     const specificUser = mymodel.userEmail(email);
