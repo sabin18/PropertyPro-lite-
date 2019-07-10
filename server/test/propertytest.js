@@ -99,7 +99,7 @@ describe('property routes test', () => {
       .set({type:'2 bedroom'})
       .end((err, res) => {
         res.should.have.property('status').eql(404);
-        res.body.should.have.property('error').eql("can't find any property");
+        res.body.should.have.property('message').eql("can't find any property");
         res.body.should.be.a('object');
         done();
       });
@@ -176,7 +176,7 @@ describe('property routes test', () => {
       .set({  })
       .end((err, res) => {
         res.should.have.property('status').eql(400);
-        res.body.should.have.property('error').eql('Token needed to get access to this page');
+        res.body.should.have.property('message').eql('Token needed to get access to this page');
 
         done();
       });
@@ -204,7 +204,7 @@ describe('property routes test', () => {
       .set({ token: '' })
       .end((err, res) => {
         res.should.have.property('status').eql(400);
-        res.body.should.have.property('error').eql('Token needed to get access to this page');
+        res.body.should.have.property('message').eql('Token needed to get access to this page');
 
         done();
       });
@@ -230,7 +230,7 @@ describe('property routes test', () => {
       .set({ token:aunthorizedToken})
       .end((err, res) => {
         res.should.have.property('status').eql(403);
-        res.body.should.have.property('error').eql('Not authorized to this page you must be login before accessing to this page');
+        res.body.should.have.property('message').eql('Not authorized to this page you must be login before accessing to this page');
 
         done();
       });
