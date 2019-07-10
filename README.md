@@ -10,20 +10,27 @@
 
 ## UI images 
 
-###             home page
+###            home page
 ![Screenshot (122)](https://user-images.githubusercontent.com/47029978/60966269-23ff7e80-a318-11e9-8b51-5be6afb118bd.png)
 
 
-###            details page
+###           details page
 ![Screenshot (123)](https://user-images.githubusercontent.com/47029978/60966900-9de43780-a319-11e9-9e27-f28d942efa99.png)
 
 
-###            login page
+###          login page
 ![Screenshot (124)](https://user-images.githubusercontent.com/47029978/60967072-12b77180-a31a-11e9-8adf-f9ca25ff441f.png)
 
 
-###          signup page
+###         signup page
+
 ![Screenshot (125)](https://user-images.githubusercontent.com/47029978/60967176-4c887800-a31a-11e9-9535-d83b79b9b9d9.png)
+
+
+####      agent panel
+
+![Screenshot (126)](https://user-images.githubusercontent.com/47029978/60979490-1b687180-a333-11e9-9cac-377bf531a012.png)
+
 
 To get the project up and running on your local machine, please follow these instructions.
 
