@@ -5,7 +5,7 @@ import Schema from '../helpers/inputvalidation';
 import model from '../models/property';
 import cloudinary from 'cloudinary';
 import dotenv from "dotenv";
-import response from '../helpers/response';
+import server from '../helpers/response';
 dotenv.config();
 
 /*configure our cloudinary*/
@@ -31,16 +31,16 @@ class PropertyController {
     } else {
     const checkproperty= model.findall(req.query);
     if (checkproperty) {
-      return response.server(res,200,'List of properties',checkproperty)
+      return server(res,200,'List of properties',checkproperty)
       
     }
     if(!type)
     {
-      return response.server(res,200,'List of all properties',properties)
+      return server(res,200,'List of all properties',properties)
       
     }
     else{
-      return response.server(res,404,"can't find any property")
+      return server(res,404,"can't find any property")
     
   }
   }
@@ -64,7 +64,6 @@ class PropertyController {
        type,city,address,price,
     } = req.body;
 
-    
 
     const {id,PhoneNumber,email,}=decoded.sub;
     const decodedData={id,PhoneNumber,email}
@@ -81,7 +80,7 @@ class PropertyController {
       res.status(400).send({ error: error.details[0].message });
     } else {
       const propaertydata = model.createproperty(req.body,decodedData,insertimage);
-      return response.server(res,200,'property created successfully',propaertydata)
+      return server(res,200,'property created successfully',propaertydata)
       
     } 
   });
@@ -112,12 +111,12 @@ class PropertyController {
       const getproperty = model.findOne(id);
       if (getproperty) {
         (getproperty.type = type),(getproperty.price =price),(getproperty.image_url = result.url);
-        return response.server(res,201,'property updated succesfully',getproperty)
+        return server(res,201,'property updated succesfully',getproperty)
       
 
       }
       else{
-        return response.server(res,400,"could not find that property")
+        return server(res,400,"could not find that property")
     }
     }
   });
@@ -139,10 +138,10 @@ class PropertyController {
       const getproperty = model.findOne(id);
       if (getproperty) {
         (getproperty.status = status);
-        return response.server(res,201,'property updated succesfully',getproperty)
+        return server(res,201,'property updated succesfully',getproperty)
       }
       else{
-        return response.server(res,400,"could not find that property")
+        return server(res,400,"could not find that property")
         
     }
     }
@@ -154,9 +153,9 @@ class PropertyController {
     const findproperty = model.findOne(id);
 
     if (findproperty) {
-      return response.server(res,200,'property found',findproperty)
+      return server(res,200,'property found',findproperty)
     }
-    return response.server(res,400,"could not find that property")
+    return server(res,400,"could not find that property")
     
   }
 //delete property function 
@@ -165,9 +164,9 @@ class PropertyController {
     const findloan = model.findproperty(id);
     if (findloan > -1) {
       model.deleteproperty(id);
-      return response.server(res,200,"property successfully deleted")
+      return server(res,200,"property successfully deleted")
     } else {
-      return response.server(res,400,"could not find that property")
+      return server(res,400,"could not find that property")
       
     }
   }
