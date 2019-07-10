@@ -22,7 +22,7 @@ class Flag {
     return foundflag;
   }
 
-  createRepayments(data, propertyid) {
+  createflag(data, propertyid) {
     const property = this.fetchOne(parseInt(propertyid));
     const insertflag = {
       id: this.flags.length + 1,
