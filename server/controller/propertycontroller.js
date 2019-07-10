@@ -31,16 +31,16 @@ class PropertyController {
     } else {
     const checkproperty= model.findall(req.query);
     if (checkproperty) {
-      return response.success(res,200,'List of properties',checkproperty)
+      return response.server(res,200,'List of properties',checkproperty)
       
     }
     if(!type)
     {
-      return response.success(res,200,'List of all properties',properties)
+      return response.server(res,200,'List of all properties',properties)
       
     }
     else{
-      return response.failed(res,404,"can't find any property")
+      return response.server(res,404,"can't find any property")
     
   }
   }
@@ -49,10 +49,7 @@ class PropertyController {
 // create  property function
   static createproperty(req, res) {
     if(!req.files) {
-        res.send({
-            status: false,
-            message: 'please upload image !'
-        });
+      return response.server(res,404,"please upload image !")
     }
     else {
       
@@ -84,7 +81,7 @@ class PropertyController {
       res.status(400).send({ error: error.details[0].message });
     } else {
       const propaertydata = model.createproperty(req.body,decodedData,insertimage);
-      return response.success(res,200,'property created successfully',propaertydata)
+      return response.server(res,200,'property created successfully',propaertydata)
       
     } 
   });
@@ -115,12 +112,12 @@ class PropertyController {
       const getproperty = model.findOne(id);
       if (getproperty) {
         (getproperty.type = type),(getproperty.price =price),(getproperty.image_url = result.url);
-        return response.success(res,201,'property updated succesfully',getproperty)
+        return response.server(res,201,'property updated succesfully',getproperty)
       
 
       }
       else{
-        return response.failed(res,400,"could not find that property")
+        return response.server(res,400,"could not find that property")
     }
     }
   });
@@ -142,10 +139,10 @@ class PropertyController {
       const getproperty = model.findOne(id);
       if (getproperty) {
         (getproperty.status = status);
-        return response.success(res,201,'property updated succesfully',getproperty)
+        return response.server(res,201,'property updated succesfully',getproperty)
       }
       else{
-        return response.failed(res,400,"could not find that property")
+        return response.server(res,400,"could not find that property")
         
     }
     }
@@ -157,9 +154,9 @@ class PropertyController {
     const findproperty = model.findOne(id);
 
     if (findproperty) {
-      return response.success(res,200,'property found',findproperty)
+      return response.server(res,200,'property found',findproperty)
     }
-    return response.failed(res,400,"could not find that property")
+    return response.server(res,400,"could not find that property")
     
   }
 //delete property function 
@@ -168,9 +165,9 @@ class PropertyController {
     const findloan = model.findproperty(id);
     if (findloan > -1) {
       model.deleteproperty(id);
-      return response.successfull(res,200,"property successfully deleted")
+      return response.server(res,200,"property successfully deleted")
     } else {
-      return response.failed(res,400,"could not find that property")
+      return response.server(res,400,"could not find that property")
       
     }
   }
