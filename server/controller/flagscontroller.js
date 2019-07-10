@@ -3,12 +3,12 @@ import flags from '../models/flags';
 import Schema from '../helpers/inputvalidation';
 import model from '../models/property';
 import flag from '../models/flags';
-import response from '../helpers/response';
+import server from '../helpers/response';
 
 class flagsController {
 
   static getflags(req, res) {
-    return response.server(res,200,'List of all flags',flags)
+    return server(res,200,'List of all flags',flags)
     
   }
   
@@ -29,14 +29,14 @@ class flagsController {
       const getproperty = model.findOne(property_id);
       if (getproperty) {
         if (getproperty.status=='sold') {
-          return  response.server(res,400,'this property have been sold !')
+          return server(res,400,'this property have been sold !')
         }
-        const createdflag = flag.createRepayments(req.body, property_id);
-        return response.server(res,200,'your flag have submit successfully ',createdflag)
+        const createdflag = flag.createflag(req.body, property_id);
+        return server(res,200,'your flag have submit successfully ',createdflag)
       
       }
       else{
-        return response.server(res,400,"that property doesn't exist")
+        return server(res,400,"that property doesn't exist")
       
     }
   }
@@ -47,11 +47,11 @@ class flagsController {
     const { id } = req.params;
     const getflag = flag.findOneflags(id);
     if (getflag.length>=1) {
-      return response.server(res,200,'flag found',getflag)
+      return server(res,200,'flag found',getflag)
      
     }
     else{
-     return response.server(res,400,"no flag found with that property id")
+     return server(res,400,"no flag found with that property id")
   
   }
 }
@@ -62,10 +62,10 @@ static Oneflag(req, res) {
   const findflag = flag.getOne(id);
 
   if (findflag) {
-    return response.server(res,200,'flag found',findflag)
+    return server(res,200,'flag found',findflag)
     
   }
-  return response.server(res,400,"could not find that flag")
+  return server(res,400,"could not find that flag")
 
   
 }

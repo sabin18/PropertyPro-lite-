@@ -4,7 +4,7 @@ import authentication from '../helpers/authentication';
 import users from '../models/user';
 import mymodel from '../models/user';
 import Schema from '../helpers/inputvalidation';
-import response from '../helpers/response';
+import server from '../helpers/response';
 
 
 class userController {
@@ -42,7 +42,7 @@ class userController {
       }); 
       const checkemail= mymodel.userEmail(email); 
       if (checkemail) {
-        return response.server(res,400,'email already exist please use another email!')
+        return server(res,400,'email already exist please use another email!')
       }
       mymodel.signupuser(req.body);
 
@@ -62,7 +62,7 @@ class userController {
   }
 
   static getuser(req, res) {
-    return response.server(res,200,'List of all users',users)
+    return server(res,200,'List of all users',users)
     
   }
 
@@ -71,10 +71,10 @@ class userController {
     const { id } = req.params;
     const user = mymodel.getuser(id);
     if (user) {
-      return response.server(res,200,'one user found ',user)
+      return server(res,200,'one user found ',user)
     }
     else{
-      return response.server(res,400,'No user found with that id')
+      return server(res,400,'No user found with that id')
     } 
   }
 
@@ -84,7 +84,7 @@ class userController {
     const { email, password } = req.body;
     const specificUser = mymodel.userEmail(email);
     if (!specificUser) {
-      return response.server(res,400,'No user with that email !')
+      return server(res,400,'No user with that email !')
     } if (specificUser) {
       if (passwordHash.verify(password,specificUser.password)) {
         const {
@@ -136,9 +136,9 @@ class userController {
       const getuser = mymodel.userEmail(email);
       if (getuser) {
         (getuser.password = mymodel.setPassword(newpassword));
-        return response.server(res,201,"password updated  succesfully")
+        return server(res,201,"password updated  succesfully")
       }
-      return response.server(res,400,"can't find user with that email")
+      return server(res,400,"can't find user with that email")
     }
     
   }
