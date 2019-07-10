@@ -51,7 +51,7 @@ describe('user routes test', () => {
       .end((error, res) => {
         if (error) done(error);
         res.should.have.property('status').eql(400);
-        res.body.should.have.property('error').eql('email already exist please use another email!');
+        res.body.should.have.property('message').eql('email already exist please use another email!');
         res.body.should.be.a('object');
         done();
       });
@@ -189,7 +189,7 @@ describe('user routes test', () => {
             if (error) done(error);
             res.should.have.status(400);
             res.body.should.be.a('object');
-            res.body.should.have.property('error').eql('No user with that email !');
+            res.body.should.have.property('message').eql('No user with that email !');
             done();
           });
       });
@@ -241,7 +241,7 @@ describe('user routes test', () => {
           .send(users)
           .end((err, res) => {
             res.should.have.property('status').eql(400);
-            res.body.should.have.property('error').eql("can't find user with that email");
+            res.body.should.have.property('message').eql("can't find user with that email");
             res.body.should.be.a('object');
             done();
           });
