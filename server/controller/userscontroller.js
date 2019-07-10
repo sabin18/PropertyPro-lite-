@@ -4,6 +4,7 @@ import authentication from '../helpers/authentication';
 import users from '../models/user';
 import mymodel from '../models/user';
 import Schema from '../helpers/inputvalidation';
+import response from '../helpers/response';
 
 
 class userController {
@@ -41,11 +42,7 @@ class userController {
       }); 
       const checkemail= mymodel.userEmail(email); 
       if (checkemail) {
-        return res.status(400).json({
-          status: 400,
-          error: 'email already exist please use another email!'
-        });
-      
+        return response.server(res,400,'email already exist please use another email!')
       }
       mymodel.signupuser(req.body);
 
@@ -65,11 +62,8 @@ class userController {
   }
 
   static getuser(req, res) {
-    return res.json({
-      status: 200,
-      message: 'List of all users',
-      user: users,
-    });
+    return response.server(res,200,'List of all users',users)
+    
   }
 
   // get user by id
@@ -77,16 +71,10 @@ class userController {
     const { id } = req.params;
     const user = mymodel.getuser(id);
     if (user) {
-      return res.status(200).json({
-        message: 'one user found',
-        user: user,
-      });
+      return response.server(res,200,'one user found ',user)
     }
     else{
-      return res.status(400).json({
-        status: 400,
-        error: "No user found with that id"
-      });
+      return response.server(res,400,'No user found with that id')
     } 
   }
 
@@ -96,10 +84,7 @@ class userController {
     const { email, password } = req.body;
     const specificUser = mymodel.userEmail(email);
     if (!specificUser) {
-      return res.status(400).json({
-        status: 400,
-        error: "No user with that email !"
-      });
+      return response.server(res,400,'No user with that email !')
     } if (specificUser) {
       if (passwordHash.verify(password,specificUser.password)) {
         const {
@@ -151,15 +136,9 @@ class userController {
       const getuser = mymodel.userEmail(email);
       if (getuser) {
         (getuser.password = mymodel.setPassword(newpassword));
-        return res.status(201).json({
-          status: 201,
-          message: 'password updated  succesfully',
-        });
+        return response.server(res,201,"password updated  succesfully")
       }
-      res.status(400).json({
-        status: 400,
-        error: "can't find user with that email"
-      });
+      return response.server(res,400,"can't find user with that email")
     }
     
   }
