@@ -6,8 +6,6 @@ import mymodel from '../models/user';
 import Schema from '../helpers/inputvalidation';
 import response from '../helpers/response';
 
-const userfailed = (res, status, error) => res.status(status).send({ status, error });
-const usersuccess = (res, status, message,data) => res.status(status).send({ status, message,data});
 
 class userController {
   static createUser(req, res) {
@@ -44,7 +42,7 @@ class userController {
       }); 
       const checkemail= mymodel.userEmail(email); 
       if (checkemail) {
-        return response.failed(res,400,'email already exist please use another email!')
+        return response.server(res,400,'email already exist please use another email!')
       }
       mymodel.signupuser(req.body);
 
@@ -64,7 +62,7 @@ class userController {
   }
 
   static getuser(req, res) {
-    return response.success(res,200,'List of all users',users)
+    return response.server(res,200,'List of all users',users)
     
   }
 
@@ -73,10 +71,10 @@ class userController {
     const { id } = req.params;
     const user = mymodel.getuser(id);
     if (user) {
-      return response.success(res,200,'one user found ',user)
+      return response.server(res,200,'one user found ',user)
     }
     else{
-      return response.failed(res,400,'No user found with that id')
+      return response.server(res,400,'No user found with that id')
     } 
   }
 
@@ -85,7 +83,7 @@ class userController {
     const { email, password } = req.body;
     const specificUser = mymodel.userEmail(email);
     if (!specificUser) {
-      return userfailed(res,400,'No user with that email !')
+      return response.server(res,400,'No user with that email !')
     } if (specificUser) {
       if (passwordHash.verify(password,specificUser.password)) {
         const {
@@ -137,14 +135,9 @@ class userController {
       const getuser = mymodel.userEmail(email);
       if (getuser) {
         (getuser.password = mymodel.setPassword(newpassword));
-        return response.successfull(res,201,"password updated  succesfully")
-       /* return res.status(201).json({
-          status: 201,
-          message: 'password updated  succesfully',
-        });
-        */
+        return response.server(res,201,"password updated  succesfully")
       }
-      return response.failed(res,400,"can't find user with that email")
+      return response.server(res,400,"can't find user with that email")
     }
     
   }
