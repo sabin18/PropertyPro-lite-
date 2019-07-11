@@ -49,7 +49,7 @@ class PropertyController {
 // create  property function
   static createproperty(req, res) {
     if(!req.files) {
-      return response.server(res,404,"please upload image !")
+      return server(res,404,"please upload image !")
     }
     else {
       
@@ -65,8 +65,8 @@ class PropertyController {
     } = req.body;
 
 
-    const {id,PhoneNumber,email,}=decoded.sub;
-    const decodedData={id,PhoneNumber,email}
+    const {id,phonenumber,email,}=decoded.sub;
+    const decodedData={id,phonenumber,email}
     const { error, value } = joi.validate(
       {
         type,
@@ -74,11 +74,18 @@ class PropertyController {
         address,
         price,
       },
-      Schema.propertySchema,
-    );
-    if (error) {
-      res.status(400).send({ error: error.details[0].message });
-    } else {
+      Schema.propertySchema, { abortEarly: false },
+      );
+      const arrErrors = [];
+      const Validatelist = () => {
+        for (let i = 0; i < error.details.length; i++) {
+          arrErrors.push(error.details[i].message);
+        }
+      };
+      if (error) {
+        `${Validatelist()}`;
+        if (error) return res.status(400).json({ status: 400, errors: arrErrors });
+      } else {
       const propaertydata = model.createproperty(req.body,decodedData,insertimage);
       return server(res,200,'property created successfully',propaertydata)
       
@@ -103,11 +110,18 @@ class PropertyController {
         type,
         price,
       },
-      Schema.UpdateSchema,
-    );
-    if (error) {
-      res.status(400).send({ error: error.details[0].message });
-    } else {
+      Schema.UpdateSchema, { abortEarly: false },
+      );
+      const arrErrors = [];
+      const Validatelist = () => {
+        for (let i = 0; i < error.details.length; i++) {
+          arrErrors.push(error.details[i].message);
+        }
+      };
+      if (error) {
+        `${Validatelist()}`;
+        if (error) return res.status(400).json({ status: 400, errors: arrErrors });
+      }  else {
       const getproperty = model.findOne(id);
       if (getproperty) {
         (getproperty.type = type),(getproperty.price =price),(getproperty.image_url = result.url);
@@ -130,11 +144,18 @@ class PropertyController {
       {
         status,
       },
-      Schema.markSchema,
-    );
-    if (error) {
-      res.status(400).send({ error: error.details[0].message });
-    } else {
+      Schema.markSchema, { abortEarly: false },
+      );
+      const arrErrors = [];
+      const Validatelist = () => {
+        for (let i = 0; i < error.details.length; i++) {
+          arrErrors.push(error.details[i].message);
+        }
+      };
+      if (error) {
+        `${Validatelist()}`;
+        if (error) return res.status(400).json({ status: 400, errors: arrErrors });
+      } {
       const getproperty = model.findOne(id);
       if (getproperty) {
         (getproperty.status = status);
