@@ -5,9 +5,9 @@ const userSchema = joi.object().keys({
     .required().trim(),
   lastname: joi.string().alphanum().min(3).max(15)
     .required().trim(),
-  address: joi.string().alphanum().min(3).max(15)
+  address: joi.string().min(3).max(15)
     .required().trim(),
-  PhoneNumber: joi.number().integer().required(),
+  phonenumber: joi.number().integer().required(),
   password: joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required().trim(),
   email: joi.string().email().required().trim(), 
 
@@ -27,7 +27,7 @@ const flagSchema = joi.object().keys({
 });
 
 const propertySchema = joi.object().keys({
-  type: joi.string().min(8).valid(['1 bedroom','2 bedroom','3 bedroom','4 bedroom','5 bedroom','mini flat'])
+  type: joi.string().min(8).valid(['1 bedroom','2 bedroom','3 bedroom','4 bedroom','5 bedroom','6 bedroom','7 bedroom','mini flat'])
   .required()
   .trim(),
   city: joi.string().alphanum().min(3).max(15)
@@ -36,14 +36,12 @@ const propertySchema = joi.object().keys({
     .required().trim().label('address'),
   price: joi.number().integer().min(1)
     .required(),
- // image_url: joi.string().min(3)
-  //  .required().trim().label('image_url'),
+
  
 });
 const UpdateSchema = joi.object().keys({
-  type: joi.string().min(8).valid(['1 bedroom','2 bedroom','3 bedroom','4 bedroom','5 bedroom','mini flat']).trim(),
+  type: joi.string().min(8).valid(['1 bedroom','2 bedroom','3 bedroom','4 bedroom','5 bedroom','6 bedroom','7 bedroom','mini flat']).trim(),
   price: joi.number().integer().min(1) ,
-  image_url: joi.string().min(3).trim().label('image_url'),
  
 });
 
