@@ -142,9 +142,9 @@ It takes a JSON object containing your valid credentials.
                    "image_url": "http://res.cloudinary.com/dsckopyup/image/upload/v1562844996/bdgpjprr6fh2v27w0xbe.jpg"
                  }
                  }
-## User/Agent can edit a property [/api/v1//property/{id}]
+## User/Agent can edit a property [/api/v1/property/:id/]
 ### User/Agent can edit a property [PATCH]
-**Endpoint** `PATCH /api/v1/property/<property-id>`
+**Endpoint** `PATCH /api/v1/property/:id/`
 
 **Description** Through this endpoint,User/Agent will be able to update a property using the Id of that property
 
@@ -180,11 +180,11 @@ It takes a JSON object containing your valid credentials.
              }
              }
 
-## User/Agent can mark a property as sold [/api/v1/property/{id}/sold]
+## User/Agent can mark a property as sold [/api/v1/property/:id/sold]
 
 ### User/Agent can  mark the property as sold [PATCH]
 
-**Endpoint** `PATCH /api/v1/property/<property-id>/sold`
+**Endpoint** `PATCH /api/v1/property/:id/sold`
 
 **Description** Through this endpoint, User/Agent will be able to mark the property as sold
 
