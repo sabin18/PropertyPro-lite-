@@ -30,7 +30,7 @@ class user {
       id: this.users.length + 1,
       firstname: info.firstname,
       lastname: info.lastname,
-      PhoneNumber:info.PhoneNumber,
+      phonenumber:info.phonenumber,
       email: info.email,
       password:this.setPassword(info.password),
       address : info.address,

@@ -40,7 +40,7 @@ class Property {
       id: this.properties.length + 1,
       created_On: moment.utc().format('DD-MM-YYYY HH:mm:ss'),
       owner: userInfo.id,
-      ownerPhoneNumber: userInfo.PhoneNumber,
+      ownerPhoneNumber: userInfo.phonenumber,
       ownerEmail: userInfo.email,
       status:'available',
       type: data.type,
