@@ -1,0 +1,422 @@
+FORMAT: 1A
+HOST:https://propertypro-lite19.herokuapp.com/
+
+#PropertyPro-lite-API Documentation
+
+Property Pro Lite is a platform where people can create and/or search properties for sale or rent. 
+
+## User Authentication For Signup [/api/v1/auth/signup]
+
+### User (Agent) can signup [POST]
+
+**Endpoint** `POST /api/v1/auth/signup`
+
+**Description** You may create your own account using this action. It takes a JSON
+object containing your personal information.
+
++ Request (application/json)
+
+        {
+           "email":benmugabe@gmail.com
+           "firstname":mugabe
+           "lastname":betrtand
+           "PhoneNumber":078865544
+           "password":arsenal
+           "address":nairobi
+        }
+
++ Response 201 (application/json)
+
+  + Body
+
+            {
+                "status": 201,
+                "message": "User signup successed!",
+                "data": {
+                    "token": " <generated - token>",
+                   "id": 2,
+                   "firstname": "mugabe",
+                   "lastname": "betrtand",
+                   "email": "benmugabe@gmail.com",
+                   "PhoneNumber": "078865544"
+                }
+            }
+
+## User Authentication For Signin [/api/v1/auth/signin]
+
+### User (Agent) can login [POST]
+
+**Endpoint** `POST /api/v1/auth/signin`
+
+**Description** You may make the login process through this endpoints. 
+It takes a JSON object containing your valid credentials.
+
++ Request (application/json)
+
+        {
+            "email":"benmugabe@gmail.com",
+            "password":"arsenal"
+        }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "status": 200,
+                "message": "User login successed!",
+                "data": {
+                    "token": "<generated-token>",
+                    "id": 2,
+                    "firstname": "mugabe",
+                    "lastname": "betrtand",
+                    "PhoneNumber": "078865544",
+                    "email": "benmugabe@gmail.com",
+                    "status": "login",
+                    "isadmin": "false"
+                }
+            }
+      
+## User/Agent can reset password [/api/v1/user/resetpassword]
+### User/Agent caneset password [PATCH]
+**Endpoint** `PATCH /api/v1/user/resetpassword>`
+
+**Description** Through this endpoint, User/Agent will be able to update or reset the reset password
+
+
++ Request (application/json)
+
+            {
+                "email":"benmugabe@gmail.com",
+                "newpassword":"gasabo"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+              "status": 201,
+              "message": "password updated  succesfully"
+            }
+
+
+## Property Collection [/api/v1/property]
+
+### User (Agent) can post a property advert [POST]
+
+**Endpoint** `POST /api/v1/property`
+
+**Description** Through this endpoint,a user can post a property advert.But before post a property advert, you should first make login with valid credentials. It takes a JSON object containing the status of your account which should be either Login or Not Login and be able to post a property advert when you are Login .
+                    
+
++ Request (application/json)
+
+    + Body
+
+            {
+            "type":"2 bedroom",
+            "city":"kigali",
+            "address":"kimironko",
+            "price":"700"
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+
+            "status": 200,
+                   "message": "property created successfully",
+                   "data": {
+                   "id": 1,
+                   "created_On": "11-07-2019 11:36:37",
+                   "owner": 2,
+                   "ownerPhoneNumber": "078865544",
+                   "ownerEmail": "benmugabe@gmail.com",
+                   "status": "available",
+                   "type": "2 bedroom",
+                   "city": "nairobi",
+                   "address": "kigali",
+                   "price": "400",
+                   "image_url": "http://res.cloudinary.com/dsckopyup/image/upload/v1562844996/bdgpjprr6fh2v27w0xbe.jpg"
+                 }
+                 }
+## User/Agent can edit a property [/api/v1//property/{id}]
+### User/Agent can edit a property [PATCH]
+**Endpoint** `PATCH /api/v1/property/<property-id>`
+
+**Description** Through this endpoint,User/Agent will be able to update a property using the Id of that property
+
++ parameters
+
+    + id (number) - propperty-id
+
++ Request (application/json)
+
+            {
+                "type":"2 bedroom",
+                "price":"300"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+               "status": 201,
+            "data": {
+            "id": 1,
+            "created_On": "11-07-2019 11:36:37",
+            "owner": 2,
+            "ownerPhoneNumber": "078865544",
+            "ownerEmail": "benmugabe@gmail.com",
+            "status": "available",
+            "type": "1 bedroom",
+            "city": "nairobi",
+            "address": "kigali",
+            "price": "100",
+            "image_url": "http://res.cloudinary.com/dsckopyup/image/upload/v1562845316/ayaqbfdqah1nxzfy0lzr.jpg"
+             }
+             }
+
+## User/Agent can mark a property as sold [/api/v1/property/{id}/sold]
+
+### User/Agent can  mark the property as sold [PATCH]
+
+**Endpoint** `PATCH /api/v1/property/<property-id>/sold`
+
+**Description** Through this endpoint, User/Agent will be able to mark the property as sold
+
+
++ parameters
+
+    + id (number) - propperty-id
+
++ Request (application/json)
+
+            {
+                "status":"sold"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+              "status": 201,
+              "message": "status updated succesfully",
+               "data": {
+                   "id": 1,
+                   "created_On": "11-07-2019 11:36:37",
+                   "owner": 2,
+                   "ownerPhoneNumber": "078865544",
+                   "ownerEmail": "benmugabe@gmail.com",
+                   "status": "sold",
+                   "type": "1 bedroom",
+                   "city": "nairobi",
+                   "address": "kigali",
+                   "price": "100",
+                   "image_url": "http://res.cloudinary.com/dsckopyup/image/upload/v1562845316/ayaqbfdqah1nxzfy0lzr.jpg"
+                   }
+                   }
+
+## View all property advert [/api/v1/property]
+### User (client) can view all property advert [GET]
+**Endpoint** `GET /api/v1/property`
+
+**Description** Through this endpoint, Every User will be able to view 
+all property adverts.
+
+    
++ Response 200 (application/json)
+
+
+    + Body
+
+            {
+              "status": 200,
+              "message": "List of all properties",
+              "data": {
+              "properties": [
+                {
+                "id": 1,
+                "created_On": "11-07-2019 11:36:37",
+                "owner": 2,
+                "ownerPhoneNumber": "078865544",
+                "ownerEmail": "benmugabe@gmail.com",
+                "status": "sold",
+                "type": "1 bedroom",
+                "city": "nairobi",
+                "address": "kigali",
+                "price": "100",
+                "image_url": "http://res.cloudinary.com/dsckopyup/image/upload/v1562845316/ayaqbfdqah1nxzfy0lzr.jpg"
+            }
+            ]
+            }
+            }
+
+## Flag Collection [/api/v1/property/:id]
+
+### User/Agent can create a flags [POST]
+
+**Endpoint** `/api/v1/property/:id`
+
+**Description** Through this endpoint,a user can add a flag to a property advert.But before creating a property advert, you should make suere that the property advert hven't maked as sold.
++ Request (application/json)
+
+    + Body
+
+             {
+            "reason":"pricing",
+            "description":"the property is too expensive"
+             }
+
++ Response 201 (application/json)
+
+    + Body
+
+               {
+                  "status": 200,
+                  "message": "your flag have submit successfully ",
+                  "data": {
+                     "id": 1,
+                     "createdOn": "11-07-2019 12:07:41",
+                     "property_id": 1,
+                     "reason": "weird demands",
+                    "description": "the price is too expensive"
+                          }
+                          }
+
+## User/Agent specific flag [/api/v1/flags/:id]
+### User/Agent can view a specific flag [GET]
+**Endpoint** `GET /api/v1/flags/:id>`
+
+**Description** Through this endpoint, Every User will be able to view a specific flag details.
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+               "status": 200,
+               "message": "flag found",
+               "data": {
+               "id": 1,
+               "createdOn": "11-07-2019 12:07:41",
+               "property_id": 1,
+               "reason": "weird demands",
+               "description": "the price is too expensive"
+             }
+             }
+
+
+### User/Agent View All flags of specif property [/api/v1/property/:id/flags]
+### User/Agent can view a All flags of specif property [GET]
+
+**Endpoint** `GET /api/v1/property/:id/flags`
+
+**Description** Through this endpoint, Every User will be able to view All flags of specif property details.
+
++ Response 200 (application/json)
+
+    + Body
+
+                 {
+                   "status": 200,
+                  "message": "flag found",
+                 "data": [
+              {
+                  "id": 1,
+                  "createdOn": "11-07-2019 12:07:41",
+                 "property_id": 1,
+                 "reason": "weird demands",
+                 "description": "the price is too expensive"
+                },
+                
+              {
+                "id": 2,
+            "createdOn": "11-07-2019 12:07:31",
+            "property_id": 1,
+            "reason": "weird demands",
+            "description": "the price is too expensive"
+             }
+             ]
+              }
+  
+
+### Agent can delete a specific proprety [/api/v1/property/:id]
+#### Agent can delete a Property [DELETE]
+**Endpoint** `DELETE /api/v1/property/:id`
+
+**Description** Through this endpoint, user will be able to delete any property
+
++ Response 200 (application/json)
+
+    + Body
+
+              {
+                "status": 200,
+                "message": "property successfully deleted"
+               }
+               
+               
+               
+### User/Agent View All users  [/api/v1/users]
+### User/Agent can view a All users [GET]
+
+**Endpoint** `GET /api/v1/users`
+
+**Description** Through this endpoint, Every User will be able to view All users.
+
++ Response 200 (application/json)
+
+    + Body
+
+                 {
+               "status": 200,
+              "message": "List of all users",
+              "data": {
+              "users": [
+               {
+                "id": 1,
+                "email": "mugabe@gmail.com",
+                "firstname": "kwizera",
+                "lastname": "kivin",
+                "password": "sha1$db1129e7$1$14d8764a1910de685c04cefc47bd265667780921",
+                "address": "kigali",
+                "PhoneNumber": "0789765444",
+                "status": "Not login",
+                "isadmin": "true"
+               }
+                 ]
+               }
+              }
+              
+### User/Agent specific user  [/api/v1/users/:id]
+### User/Agent can view specific user [GET]
+
+**Endpoint** `GET /api/v1/users`
+
+**Description** Through this endpoint, Every User will be able be view specific user.
+
++ Response 200 (application/json)
+
+    + Body
+
+                {
+                "status": 200,
+                "message": "one user found ",
+                "data": {
+                "id": 1,
+                "email": "mugabe@gmail.com",
+                "firstname": "kwizera",
+                "lastname": "kivin",
+                "password": "sha1$db1129e7$1$14d8764a1910de685c04cefc47bd265667780921",
+                "address": "kigali",
+                "PhoneNumber": "0789765444",
+                "status": "Not login",
+               "isadmin": "true"
+             }
+             }
