@@ -10,23 +10,30 @@ import server from '../helpers/response';
 class userController {
   static createUser(req, res) {
     const {
-      email, firstname, lastname, password,PhoneNumber, address, isadmin,
+      email, firstname, lastname, password,phonenumber, address, isadmin,
     } = req.body;
     const { error, value } = joi.validate(
       {
         email,
         firstname,
         lastname,
-        PhoneNumber,
+        phonenumber,
         password,
         address,
        
       },
-      Schema.userSchema,
-    );
-    if (error ) {
-      res.status(400).send({ error: error.details[0].message });
-    } else {
+      Schema.userSchema,{ abortEarly: false },
+      );
+      const arrErrors = [];
+      const Validatelist = () => {
+        for (let i = 0; i < error.details.length; i++) {
+          arrErrors.push(error.details[i].message);
+        }
+      };
+      if (error) {
+        `${Validatelist()}`;
+        if (error) return res.status(400).json({ status: 400, error: arrErrors });
+      }else {
       // generate the id and pass it to a user
       const id = parseInt(mymodel.users.length) + 1;
       const token = authentication.encodeToken({
@@ -35,7 +42,7 @@ class userController {
         lastname,
         password,
         address,
-        PhoneNumber,
+        phonenumber,
         userId: id,
         status: 'Not login',
         isadmin:'false',
@@ -54,7 +61,7 @@ class userController {
           firstname,
           lastname,
           email,
-          PhoneNumber,
+          phonenumber,
           isadmin,
         },
       });
@@ -88,13 +95,13 @@ class userController {
     } if (specificUser) {
       if (passwordHash.verify(password,specificUser.password)) {
         const {
-          firstname, lastname,PhoneNumber, email, password, isadmin,
+          firstname, lastname,phonenumber, email, password, isadmin,
         } = specificUser;
         const user = {
           firstname,
           lastname,
           email,
-          PhoneNumber,
+          phonenumber,
           password,
           status:'login',
           isadmin: specificUser.isadmin,
@@ -107,7 +114,7 @@ class userController {
           id: specificUser.id,
           firstname,
           lastname,
-          PhoneNumber,
+          phonenumber,
           email,
           status:user.status,
           isadmin,
@@ -128,11 +135,18 @@ class userController {
         email,
         newpassword,
       },
-      Schema.resetpassSchema,
-    );
-    if (error) {
-      res.status(400).send({ error: error.details[0].message });
-    } else {
+      Schema.resetpassSchema,{ abortEarly: false },
+      );
+      const arrErrors = [];
+      const Validatelist = () => {
+        for (let i = 0; i < error.details.length; i++) {
+          arrErrors.push(error.details[i].message);
+        }
+      };
+      if (error) {
+        `${Validatelist()}`;
+        if (error) return res.status(400).json({ status: 400, errors: arrErrors });
+      } else {
       const getuser = mymodel.userEmail(email);
       if (getuser) {
         (getuser.password = mymodel.setPassword(newpassword));

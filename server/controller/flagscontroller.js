@@ -21,11 +21,18 @@ class flagsController {
       {
         reason,description,
       },
-      Schema.flagSchema,
-    );
-    if (error) {
-      res.status(400).send({ error: error.details[0].message });
-    } else {
+      Schema.flagSchema, { abortEarly: false },
+      );
+      const arrErrors = [];
+      const Validatelist = () => {
+        for (let i = 0; i < error.details.length; i++) {
+          arrErrors.push(error.details[i].message);
+        }
+      };
+      if (error) {
+        `${Validatelist()}`;
+        if (error) return res.status(400).json({ status: 400, errors: arrErrors });
+      }  else {
       const getproperty = model.findOne(property_id);
       if (getproperty) {
         if (getproperty.status=='sold') {
