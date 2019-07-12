@@ -10,11 +10,12 @@ router.use(fileUpload({
     createParentPath: true,
     useTempFiles:true
   }));
+  
 // get routers
 
 router.get('/api/v1/users',userController.getuser);
 router.get('/api/v1/flags', flagController.getflags);
-router.get('/api/v1/property',PropertyController.GetPropertyType);
+router.get('/api/v1/properties',PropertyController.GetPropertyType);
 
 // post routers
 router.post('/api/v1/property',authentication.UseraccessRequired, PropertyController.createproperty);
