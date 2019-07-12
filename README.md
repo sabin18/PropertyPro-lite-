@@ -87,7 +87,7 @@ To get the project up and running on your local machine, please follow these ins
 | POST       | /api/v1/auth/signup             | public                       | create an account                     |
 | POST       | /api/v1/auth/signin             | public                       | login to the app                      |
 | POST       | /api/v1/property/               | private(user)                | create property adrvert               |
-| GET        | /api/v1/property/               | public                       | get all property                      |
+| GET        | /api/v1/properties/               | public                       | get all property                      |
 | GET        | /api/v1/property/id             | public                       | get specific property                 |
 | PATCH      | /api/v1/property/id             | public                       | Edit property                         |
 | PATCH      | /api/v1/property/sold           | public                       | mark property as sold                 |
