@@ -124,7 +124,7 @@ describe('flags routes test', () => {
       .end((error, res) => {
         res.should.have.property('status').eql(400);
         if (error) done(error);
-        res.body.should.have.property('error');
+        res.body.should.have.property('errors');
         done();
       });
   });
