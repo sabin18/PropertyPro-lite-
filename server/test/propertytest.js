@@ -83,7 +83,7 @@ before('Create an unkown user', (done) => {
 describe('property routes test', () => {
   it('it should GET all property', (done) => {
     chai.request(app)
-      .get('/api/v1/property')
+      .get('/api/v1/properties')
       .end((err, res) => {
         res.should.have.property('status').eql(200);
         res.body.should.be.a('object');
@@ -95,7 +95,7 @@ describe('property routes test', () => {
 
   it('it should not GET all property of specific type', (done) => {
     chai.request(app)
-      .get('/api/v1/property?type=2 bedroom')
+      .get('/api/v1/properties?type=2 bedroom')
       .set({type:'2 bedroom'})
       .end((err, res) => {
         res.should.have.property('status').eql(404);
@@ -105,13 +105,13 @@ describe('property routes test', () => {
       });
   });
 
-  it('it should not GET all property of wrong type', (done) => {
+  it('it should not GET all properties of wrong type', (done) => {
     chai.request(app)
-      .get('/api/v1/property?type=')
+      .get('/api/v1/properties?type=')
       .set({type:''})
-      .end((error, res) => {
+      .end((errors, res) => {
         res.should.have.property('status').eql(400);
-        if (error) done(error);
+        if (errors) done(errors);
         res.body.should.have.property('error');
         done();
       });
@@ -142,9 +142,9 @@ describe('property routes test', () => {
       });
   });
 
-  it('it should GET all property of specific type', (done) => {
+  it('it should GET all properties of specific type', (done) => {
     chai.request(app)
-      .get('/api/v1/property?type=mini flat')
+      .get('/api/v1/properties?type=mini flat')
       .set({type:'mini flat'})
       .end((err, res) => {
         res.should.have.property('status').eql(200);
@@ -256,7 +256,7 @@ describe('property routes test', () => {
       .end((error, res) => {
         res.should.have.property('status').eql(400);
         if (error) done(errors);
-        res.body.should.have.property('error');
+        res.body.should.have.property('errors');
         done();
       });
   });
@@ -342,7 +342,7 @@ describe('property routes test', () => {
       .end((error, res) => {
         res.should.have.property('status').eql(400);
         if (error) done(error);
-        res.body.should.have.property('error');
+        res.body.should.have.property('errors');
         done();
       });
   });
@@ -408,7 +408,7 @@ describe('property routes test', () => {
       .end((error, res) => {
         res.should.have.property('status').eql(400);
         if (error) done(error);
-        res.body.should.have.property('error');
+        res.body.should.have.property('errors');
         done();
       });
   });

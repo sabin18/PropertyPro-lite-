@@ -15,7 +15,7 @@ describe('user routes test', () => {
       lastname: 'kivin',
       password: '5858949',
       address: 'kigali',
-      PhoneNumber:'0789765444',
+      phonenumber:'0789765444',
       status: 'Not login',
       isadmin: 'false',
     };
@@ -40,7 +40,7 @@ describe('user routes test', () => {
       lastname: 'kivin',
       password: '5858949',
       address: 'kigali',
-      PhoneNumber:'0789765444',
+      phonenumber:'0789765444',
       status: 'Not login',
       isadmin: 'false',
     };
@@ -126,7 +126,7 @@ describe('user routes test', () => {
           lastname: 'kivin',
           password: '5858949',
           address: 'kigali',
-          PhoneNumber:'0789765444',
+          phonenumber:'0789765444',
           status: 'login',
           isadmin: 'false',
         };
@@ -224,7 +224,7 @@ describe('user routes test', () => {
           .end((error, res) => {
             if (error) done(error);
             res.should.have.property('status').eql(400);
-            res.body.should.have.property('error');
+            res.body.should.have.property('errors');
             done();
           });
         });
