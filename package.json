@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon transpiled server/index.js",
+    "create": "babel-node server/tables/create.js",
+    "drop": "babel-node server/tables/drop.js",
+    "start": "concurrently \"nodemon transpiled server/index.js\" \"npm run drop && npm run create \"",
     "test": "nyc --reporter=html --reporter=text mocha server/./test/*.js --compilers js:babel-core/register --timeout 10000 --exit",
     "coveralls": "nyc report --reporter=text-lcov| coveralls",
     "compile": "babel ./server -d ./compiled",
@@ -23,6 +25,7 @@
     "babel-preset-env": "^1.7.0",
     "body-parser": "^1.19.0",
     "cloudinary": "^1.14.0",
+    "concurrently": "^4.1.0",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.5",
