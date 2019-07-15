@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import { Pool } from 'pg';
-import 'babel-polyfill';
 // Use dotenv to configure the environment variables
 // You need to put all environment variables in the .env file like passwords, PGDatabase.
 dotenv.config();
