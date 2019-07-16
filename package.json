@@ -6,7 +6,7 @@
     "create": "./node_modules/.bin/babel-node server/tables/create.js",
     "drop": "./node_modules/.bin/babel-node server/tables/drop.js",
     "start": "concurrently \"nodemon transpiled server/index.js\" \"npm run drop && npm run create \"",
-    "test": "concurrently \"npm run drop && npm run create && nyc --reporter=html --reporter=text mocha server/./test/*.js --compilers js:babel-core/register --timeout 10000 --exit\"",
+    "test": "concurrently \"npm run drop && npm run create && nyc --reporter=html --reporter=text mocha server/./test/*.js --compilers js:babel-core/register --timeout 12000 --exit\"",
     "coveralls": "nyc report --reporter=text-lcov| coveralls",
     "compile": "babel ./server -d ./compiled",
     "lint": "./node_modules/.bin/eslint --fix ./**/*.js"
