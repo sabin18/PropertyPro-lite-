@@ -6,7 +6,7 @@
     "create": "./node_modules/.bin/babel-node server/tables/create.js",
     "drop": "./node_modules/.bin/babel-node server/tables/drop.js",
     "start": "concurrently \"nodemon transpiled server/index.js\" \"npm run drop && npm run create \"",
-    "test": "concurrently \"npm run drop && npm run create && nyc --reporter=html --reporter=text mocha server/./test/*.js --compilers js:babel-core/register --timeout 12000 --exit\"",
+    "test": "concurrently \"npm run drop && npm run create && nyc --reporter=html --reporter=text mocha server/./test/*.js --compilers js:@babel/register --timeout 10000 --exit\"",
     "coveralls": "nyc report --reporter=text-lcov| coveralls",
     "compile": "babel ./server -d ./compiled",
     "lint": "./node_modules/.bin/eslint --fix ./**/*.js"
@@ -19,12 +19,11 @@
   "keywords": [],
   "description": "",
   "dependencies": {
-    "@babel/cli": "^7.5.0",
-    "@babel/core": "^7.5.0",
-    "@babel/node": "^7.5.0",
-    "@babel/plugin-transform-runtime": "^7.5.0",
-    "@babel/polyfill": "^7.4.4",
-    "@babel/preset-env": "^7.5.0",
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
     "@babel/register": "^7.4.4",
     "body-parser": "^1.19.0",
     "cloudinary": "^1.14.0",
@@ -45,9 +44,6 @@
     "sequelize": "^4.42.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.5.0",
-    "babel-cli": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
     "concurrently": "^4.1.1",

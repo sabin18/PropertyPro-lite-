@@ -70,7 +70,7 @@ class PropertyController {
 
     const {id,phonenumber,email,}=decoded.sub;
     const decodedData={id,phonenumber,email}
-    const { error, value } = joi.validate(
+    const { error} = joi.validate(
       {
         type,
         city,
@@ -108,7 +108,7 @@ class PropertyController {
     
     const { id } = req.params;
     const {type,price} = req.body;
-    const { error, value } = joi.validate(
+    const { error} = joi.validate(
       {
         type,
         price,
@@ -127,10 +127,9 @@ class PropertyController {
       }  else {
       const getproperty = model.findOne(id);
       if (getproperty) {
-        //(getproperty.type = type),(getproperty.price =price),(getproperty.image_url = result.url);
          await model.update(type,price,result.url,id);
         const updatedproperty=  await model.findOne(id);
-        return server(res,201,'property updated succesfully',getproperty)
+        return server(res,201,'property updated succesfully',updatedproperty)
       }
       else{
         return server(res,400,"could not find that property")
