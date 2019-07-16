@@ -1,10 +1,11 @@
 import jwt from 'jwt-simple';
 import joi from 'joi';
-import properties from '../models/property';
 import Schema from '../helpers/inputvalidation';
 import model from '../models/property';
 import cloudinary from 'cloudinary';
 import dotenv from "dotenv";
+import queries from '../db/Queries';
+import execute from '../src/connection';
 import server from '../helpers/response';
 dotenv.config();
 
@@ -18,7 +19,7 @@ cloudinary.config({
 class PropertyController { 
 //get properties function
   
-  static GetPropertyType(req, res) {
+   static async GetPropertyType(req, res) {
     const {type}=req.query;
     const { error, value } = joi.validate(
       {
@@ -29,14 +30,16 @@ class PropertyController {
     if (error) {
       res.status(400).send({ error: error.details[0].message });
     } else {
-    const checkproperty= model.findall(req.query);
-    if (checkproperty) {
-      return server(res,200,'List of properties',checkproperty)
-      
-    }
+      const checkproperty= await model.findall(req.query);
+     
     if(!type)
     {
+      const properties= await execute(queries.getproperty);
       return server(res,200,'List of all properties',properties)
+      
+    }
+    if (checkproperty.length!=0) {
+      return server(res,200,'List of properties',checkproperty)
       
     }
     else{
@@ -47,14 +50,14 @@ class PropertyController {
 }
 
 // create  property function
-  static createproperty(req, res) {
+   static async createproperty(req, res) {
     if(!req.files) {
       return server(res,404,"please upload image !")
     }
     else {
       
       let image = req.files.image;   
-   cloudinary.uploader.upload(image.tempFilePath, (result) => {
+   cloudinary.uploader.upload(image.tempFilePath, async (result) => {
    const insertimage={
      image_url:result.url 
     };
@@ -85,9 +88,9 @@ class PropertyController {
       if (error) {
         `${Validatelist()}`;
         if (error) return res.status(400).json({ status: 400, errors: arrErrors });
-      } else {
-      const propaertydata = model.createproperty(req.body,decodedData,insertimage);
-      return server(res,200,'property created successfully',propaertydata)
+      } else  {
+      const propertydata = await model.createproperty(req.body,decodedData,insertimage);
+      return server(res,200,'property created successfully',propertydata)
       
     } 
   });
@@ -95,10 +98,10 @@ class PropertyController {
 }
 
   // update property function (patch)
-  static updateproperty(req, res) {
+   static async updateproperty(req, res) {
 
     let image = req.files.image;   
-   cloudinary.uploader.upload(image.tempFilePath, (result) => {
+   cloudinary.uploader.upload(image.tempFilePath,async  (result) => {
   
      result.url 
     
@@ -124,10 +127,10 @@ class PropertyController {
       }  else {
       const getproperty = model.findOne(id);
       if (getproperty) {
-        (getproperty.type = type),(getproperty.price =price),(getproperty.image_url = result.url);
+        //(getproperty.type = type),(getproperty.price =price),(getproperty.image_url = result.url);
+         await model.update(type,price,result.url,id);
+        const updatedproperty=  await model.findOne(id);
         return server(res,201,'property updated succesfully',getproperty)
-      
-
       }
       else{
         return server(res,400,"could not find that property")
@@ -137,7 +140,7 @@ class PropertyController {
   }
 
   //mark a property as sold function
-  static markproperty(req, res) {
+   static async markproperty(req, res) {
     const { id } = req.params;
     const {status} = req.body;
     const { error, value } = joi.validate(
@@ -156,10 +159,11 @@ class PropertyController {
         `${Validatelist()}`;
         if (error) return res.status(400).json({ status: 400, errors: arrErrors });
       } {
-      const getproperty = model.findOne(id);
-      if (getproperty) {
-        (getproperty.status = status);
-        return server(res,201,'property updated succesfully',getproperty)
+        const getproperty = await model.findOne(id);
+        if (getproperty.length!=0) {
+        model.MarkAsSold(status,id);
+        const getmarked = await model.findOne(id);
+        return server(res,201,'property updated succesfully',getmarked)
       }
       else{
         return server(res,400,"could not find that property")
@@ -169,10 +173,9 @@ class PropertyController {
   }
 
   // get property by id
-  static getOneproperty(req, res) {
+   static async getOneproperty(req, res) {
     const { id } = req.params;
-    const findproperty = model.findOne(id);
-
+    const findproperty = await model.findOne(id);
     if (findproperty) {
       return server(res,200,'property found',findproperty)
     }
@@ -180,10 +183,10 @@ class PropertyController {
     
   }
 //delete property function 
-  static deleteproperty(req, res) {
+   static async deleteproperty(req, res) {
     const { id } = req.params;
-    const findloan = model.findproperty(id);
-    if (findloan > -1) {
+    const findloan = await model.findOne(id);
+    if (findloan.length!=0) {
       model.deleteproperty(id);
       return server(res,200,"property successfully deleted")
     } else {
