@@ -41,6 +41,7 @@
     "sequelize": "^4.42.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.5.0",
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "chai": "^4.2.0",
