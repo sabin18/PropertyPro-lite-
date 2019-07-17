@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import { Pool } from 'pg';
-import 'babel-polyfill';
+import '@babel/polyfill';
 // Use dotenv to configure the environment variables
 // You need to put all environment variables in the .env file like passwords, PGDatabase.
 dotenv.config();
@@ -13,10 +13,12 @@ if(process.env.NODE_ENV==='production'){
 
 if(process.env.NODE_ENV==='test'){
 
-  pool=new Pool({connectionString:DATABASE_TEST_URL});
+  pool=new Pool({connectionString:process.env.DATABASE_TEST_URL});
 }else{
   pool = new Pool({connectionString: process.env.DATABASE_URL});
 }
+console.log('=================== environment variables======');
+console.log(process.env.NODE_ENV);
 const connect = async () => pool.connect();
 // use async for a function that will have to wait for another one to complete.
 const execute = async (sql, data = []) => {
