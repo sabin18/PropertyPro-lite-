@@ -1,3 +1,4 @@
+import execute from '../src/connection';
 
 const sqlQueries = {};
 
@@ -33,6 +34,7 @@ sqlQueries.findoneuser = findoneuser;
 sqlQueries.resetpassword = resetpassword;
 
 //insert flag into database
+
 const findflags= 'SELECT * FROM flags WHERE property_id =$1';
 const insertflags = 'INSERT INTO flags (createdon,property_id,reason,description) VALUES($1,$2,$3,$4) RETURNING * ';
 const getall= 'SELECT * FROM flags';

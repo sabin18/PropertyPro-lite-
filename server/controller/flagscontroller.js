@@ -1,23 +1,23 @@
 import joi from 'joi';
-import flags from '../models/flags';
 import Schema from '../helpers/inputvalidation';
 import model from '../models/property';
 import flag from '../models/flags';
 import server from '../helpers/response';
+import execute from '../src/connection';
+import queries from '../db/Queries';
 
 class flagsController {
 
-  static getflags(req, res) {
+  static async getflags(req, res) {
+    const flags = await execute(queries.getall);
     return server(res,200,'List of all flags',flags)
     
   }
-  
   // create flag function
-
-  static createflags(req, res) {
+  static async createflags(req, res) {
     const { property_id } = req.params;
     const { reason,description} = req.body;
-    const { error, value } = joi.validate(
+    const {error} = joi.validate(
       {
         reason,description,
       },
@@ -33,12 +33,12 @@ class flagsController {
         `${Validatelist()}`;
         if (error) return res.status(400).json({ status: 400, errors: arrErrors });
       }  else {
-      const getproperty = model.findOne(property_id);
-      if (getproperty) {
-        if (getproperty.status=='sold') {
+      const getproperty = await model.findOne(property_id);
+      if (getproperty.length!=0) {
+        if (getproperty[0].status=='sold') {
           return server(res,400,'this property have been sold !')
         }
-        const createdflag = flag.createflag(req.body, property_id);
+        const createdflag =await flag.createflag(req.body, property_id);
         return server(res,200,'your flag have submit successfully ',createdflag)
       
       }
@@ -50,10 +50,10 @@ class flagsController {
 }
   
   // get property flag by id
-  static getOneflag(req, res) {
+  static async getOneflag(req, res) {
     const { id } = req.params;
-    const getflag = flag.findOneflags(id);
-    if (getflag.length>=1) {
+    const getflag = await flag.findOneflags(id);
+    if (getflag.length!=0) {
       return server(res,200,'flag found',getflag)
      
     }
@@ -64,11 +64,11 @@ class flagsController {
 }
 
 // get flag by id
-static Oneflag(req, res) {
+static async Oneflag(req, res) {
   const { id } = req.params;
-  const findflag = flag.getOne(id);
+  const findflag = await flag.getOne(id);
 
-  if (findflag) {
+  if (findflag.length!=0) {
     return server(res,200,'flag found',findflag)
     
   }
