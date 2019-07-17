@@ -1,40 +1,44 @@
 import moment from 'moment';
-import properties from './property';
+import queries from '../db/Queries';
+import execute from '../src/connection';
 
 // Define a class for creating a flag
 class Flag {
-  constructor() {
-    this.flags = [];
-  }
+  
+  async fetchOne(propertyId) {
+    const foundproperty =await execute(queries.findoneproperty,[propertyId]);
 
-  fetchOne(propertyId) {
-    const foundproperty =properties.findOne(propertyId);
     return foundproperty;
   }
-  getOne(Id) {
-    const oneflag =this.flags.find(flag => flag.id === parseInt(Id));
+  
+  async getOne(Id) {
+    const oneflag =await execute(queries.getoneflags,[Id]);
     return oneflag;
   }
 
   // Fetch flag by id
-  findOneflags(flagId) {
-    const foundflag = this.flags.filter(flag => flag.property_id === parseInt(flagId));
+  async findOneflags(flagId) {
+    const foundflag = await execute(queries.findflags,[flagId]);
     return foundflag;
   }
 
-  createflag(data, propertyid) {
-    const property = this.fetchOne(parseInt(propertyid));
+  async createflag(data, propertyid) {
+    const property = await this.fetchOne(parseInt(propertyid));
     const insertflag = {
-      id: this.flags.length + 1,
       createdOn: moment.utc().format('DD-MM-YYYY HH:MM:SS'),
-      property_id:property.id,
+      property_id:property[0].id,
       reason:data.reason,
-      description:data.description,
-      
-
+      description:data.description, 
     };
-    this.flags.push(insertflag);
-    return insertflag;
+
+    const createflag = await execute(queries.insertflags,[
+      insertflag.createdOn,
+      insertflag.property_id,
+      insertflag.reason,
+      insertflag.description,
+     
+    ]);
+    return createflag;
   }
 }
 
