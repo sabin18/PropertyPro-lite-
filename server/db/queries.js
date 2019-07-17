@@ -1,7 +1,7 @@
 
 const sqlQueries = {};
 
-//insert loans into the database
+//insert property into the database
 const getproperty = 'SELECT * FROM property';
 const insertproperty = 'INSERT INTO property (created_on,owner,ownerphonenumber,owneremail,status,type,city,address,price,image_url) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING * ';
 const findoneproperty=  'SELECT * FROM property WHERE id =$1';
@@ -33,6 +33,16 @@ sqlQueries.alluser = alluser;
 sqlQueries.findoneuser = findoneuser;
 sqlQueries.resetpassword = resetpassword;
 
+//insert flag into database
+const findflags= 'SELECT * FROM flags WHERE property_id =$1';
+const insertflags = 'INSERT INTO flags (createdon,property_id,reason,description) VALUES($1,$2,$3,$4) RETURNING * ';
+const getall= 'SELECT * FROM flags';
+const getoneflags= 'SELECT * FROM flags WHERE id =$1 ';
+
+sqlQueries.findflags = findflags;
+sqlQueries.insertflags = insertflags;
+sqlQueries.getall=getall;
+sqlQueries.getoneflags =getoneflags;
 
 
 export default sqlQueries;
