@@ -9,7 +9,6 @@ class Flag {
     const foundproperty =await execute(queries.findoneproperty,[propertyId]);
     return foundproperty;
   }
-
   async getOne(Id) {
     const oneflag =await execute(queries.getoneflags,[Id]);
     return oneflag;

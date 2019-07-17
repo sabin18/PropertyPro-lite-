@@ -5,15 +5,12 @@ import queries from '../db/queries';
 import execute from '../src/connection';
 import flag from '../models/flags';
 import response from '../helpers/response';
-
 class flagsController {
 
   static async getflags(req, res) {
     const flags = await execute(queries.getall);
-    return response.success(res,200,'List of all flags',flags)
-    
+    return response.success(res,200,'List of all flags',flags)  
   }
-  
   // create flag function
   static async createflags(req, res) {
     const { property_id } = req.params;
@@ -40,8 +37,7 @@ class flagsController {
           return response.error(res,400,'this property have been sold !')
         }
         const createdflag =await flag.createflag(req.body, property_id);
-        return response.success(res,200,'your flag have submit successfully ',createdflag)
-      
+        return response.success(res,200,'your flag have submit successfully ',createdflag
       }
       else{
         return response.error(res,404,"that property doesn't exist")
@@ -56,7 +52,6 @@ class flagsController {
     const getflag = await flag.findOneflags(id);
     if (getflag.length!=0) {
       return response.success(res,200,'flag found',getflag)
-     
     }
     else{
      return response.error(res,404,"no flag found with that property id")
@@ -71,7 +66,6 @@ static async Oneflag(req, res) {
 
   if (findflag.length!=0) {
     return response.success(res,200,'flag found',findflag)
-    
   }
   return response.error(res,404,"could not find that flag")
 

@@ -1,3 +1,4 @@
+import execute from '../src/connection';
 
 const sqlQueries = {};
 
