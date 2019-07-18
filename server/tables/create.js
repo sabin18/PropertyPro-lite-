@@ -27,6 +27,7 @@ const tables = `
                     city VARCHAR(128) NOT NULL,
                     address VARCHAR(128) NOT NULL,
                     price INTEGER NOT NULL,
+                    description VARCHAR(128) NOT NULL,
                     image_url VARCHAR(128) NOT NULL
                    
                     
