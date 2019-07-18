@@ -17,7 +17,7 @@ class flagsController {
     const { reason,description} = req.body;
     const { error} = joi.validate(
       {
-        reason,description,
+        reason,description,property_id,
       },
       Schema.flagSchema, { abortEarly: false },
       );
@@ -48,8 +48,24 @@ class flagsController {
   
   // get property flag by id
   static async getOneflag(req, res) {
-    const { id } = req.params;
-    const getflag = await flag.findOneflags(id);
+    const { ID } = req.params;
+    const { error} = joi.validate(
+      {
+        ID,
+      },
+      Schema.parmSchema, { abortEarly: false },
+      );
+      const arrErrors = [];
+      const Validatelist = () => {
+        for (let i = 0; i < error.details.length; i++) {
+          arrErrors.push(error.details[i].message);
+        }
+      };
+      if (error) {
+        `${Validatelist()}`;
+        if (error) return res.status(400).json({ status: 400, errors: arrErrors });
+      } else{
+    const getflag = await flag.findOneflags(ID);
     if (getflag.length!=0) {
       return response.success(res,200,'flag found',getflag)
     }
@@ -58,16 +74,34 @@ class flagsController {
   
   }
 }
+}
 
 // get flag by id
 static async Oneflag(req, res) {
-  const { id } = req.params;
-  const findflag = await flag.getOne(id);
+  const { ID } = req.params;
+  const { error} = joi.validate(
+    {
+      ID,
+    },
+    Schema.parmSchema, { abortEarly: false },
+    );
+    const arrErrors = [];
+    const Validatelist = () => {
+      for (let i = 0; i < error.details.length; i++) {
+        arrErrors.push(error.details[i].message);
+      }
+    };
+    if (error) {
+      `${Validatelist()}`;
+      if (error) return res.status(400).json({ status: 400, errors: arrErrors });
+    } else{
+  const findflag = await flag.getOne(ID);
 
   if (findflag.length!=0) {
     return response.success(res,200,'flag found',findflag)
   }
   return response.error(res,404,"could not find that flag")
+}
 }
 }
 
