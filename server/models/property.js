@@ -19,6 +19,12 @@ class Property {
     return propertytype;
    
   }
+  async findproperty(destription) {
+    const property = await execute(queries.checkpro,[destription]);
+    return property;
+   
+  }
+
 
   async MarkAsSold(status,id) {
     const sold = await execute(queries.mark,[status,id]);
@@ -48,6 +54,7 @@ class Property {
       city: data.city,
       address: data.address,
       price: data.price,
+      description:data.description,
       image_url: url.image_url, 
     };
     const insert = await execute(queries.insertproperty, [
@@ -59,7 +66,8 @@ class Property {
       insertproperty.type,
       insertproperty.city,
       insertproperty.address,
-      insertproperty.price, 
+      insertproperty.price,
+      insertproperty.description, 
       insertproperty.image_url,  
     ]);
     return insert;

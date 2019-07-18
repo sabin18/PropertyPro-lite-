@@ -64,7 +64,7 @@ class PropertyController {
     const decoded = jwt.decode(req.headers.token, process.env.SECRET_KEY);
     
     const {
-       type,city,address,price,
+       type,city,address,price,description,
     } = req.body;
 
 
@@ -76,6 +76,7 @@ class PropertyController {
         city,
         address,
         price,
+        description,
       },
       Schema.propertySchema, { abortEarly: false },
       );
@@ -89,12 +90,18 @@ class PropertyController {
         `${Validatelist()}`;
         if (error) return res.status(400).json({ status: 400, errors: arrErrors });
       } else  {
+      const checkproperty = await model.findproperty(description);
+      if(checkproperty.length!=0){
+        return response.error(res,409,"property aleardy exist")
+      }else{
       const propertydata = await model.createproperty(req.body,decodedData,insertimage);
-      return response.success(res,200,'property created successfully',propertydata)
+      return response.success(res,201,'property created successfully',propertydata)
       
     } 
+  }
   });
   }
+  
 }
 
   // update property function (patch)
@@ -106,12 +113,15 @@ class PropertyController {
      result.url 
     
     
-    const { id } = req.params;
+    const { ID } = req.params;
     const {type,price} = req.body;
+    const decoded = jwt.decode(req.headers.token, process.env.SECRET_KEY);
+    const {id}=decoded.sub;
     const { error} = joi.validate(
       {
         type,
         price,
+        ID
       },
       Schema.UpdateSchema, { abortEarly: false },
       );
@@ -125,26 +135,36 @@ class PropertyController {
         `${Validatelist()}`;
         if (error) return res.status(400).json({ status: 400, errors: arrErrors });
       }  else {
-      const getproperty =await model.findOne(id);
+      const getproperty = await model.findOne(ID);
       if (getproperty.length!=0) {
-         await model.update(type,price,result.url,id);
-        const updatedproperty=  await model.findOne(id);
+        if(getproperty[0].owner!=id)
+      {
+        return response.error(res,403,"you are not allowed to update this property")
+      }
+      else{
+         await model.update(type,price,result.url,ID);
+        const updatedproperty=  await model.findOne(ID);
         return response.success(res,200,'property updated succesfully',updatedproperty)
       }
+    }
       else{
         return response.error(res,404,"could not find that property")
     }
-    }
+
+  }
   });
   }
 
   //mark a property as sold function
    static async markproperty(req, res) {
-    const { id } = req.params;
+    const { ID } = req.params;
     const {status} = req.body;
-    const { error, value } = joi.validate(
+     const decoded = jwt.decode(req.headers.token, process.env.SECRET_KEY);
+     const {id}=decoded.sub;
+    const { error} = joi.validate(
       {
         status,
+        ID,
       },
       Schema.markSchema, { abortEarly: false },
       );
@@ -157,43 +177,91 @@ class PropertyController {
       if (error) {
         `${Validatelist()}`;
         if (error) return res.status(400).json({ status: 400, errors: arrErrors });
-      } {
-        const getproperty = await model.findOne(id);
+      } else{
+        const getproperty = await model.findOne(ID);
         if (getproperty.length!=0) {
-        model.MarkAsSold(status,id);
-        const getmarked = await model.findOne(id);
+          if(getproperty[0].owner!=id)
+          {
+            return response.error(res,403,"you are not allowed to update this property")
+          }
+          else{
+        model.MarkAsSold(status,ID);
+        const getmarked = await model.findOne(ID);
         return response.success(res,200,'property updated succesfully',getmarked)
       }
+    }
       else{
         return response.error(res,404,"could not find that property")
         
     }
     }
+    
   }
 
   // get property by id
    static async getOneproperty(req, res) {
-    const { id } = req.params;
-    const findproperty = await model.findOne(id);
+    const { ID } = req.params;
+    const { error} = joi.validate(
+      {
+        ID,
+      },
+      Schema.parmSchema, { abortEarly: false },
+      );
+      const arrErrors = [];
+      const Validatelist = () => {
+        for (let i = 0; i < error.details.length; i++) {
+          arrErrors.push(error.details[i].message);
+        }
+      };
+      if (error) {
+        `${Validatelist()}`;
+        if (error) return res.status(400).json({ status: 400, errors: arrErrors });
+      } else{
+    const findproperty = await model.findOne(ID);
     if (findproperty.length!=0) {
       return response.success(res,200,'property found',findproperty)
     }
     return response.error(res,404,"could not find that property")
     
   }
+}
 //delete property function 
    static async deleteproperty(req, res) {
-    const { id } = req.params;
-    const findloan = await model.findOne(id);
+    const { ID } = req.params;
+    const { error} = joi.validate(
+      {
+        ID,
+      },
+      Schema.parmSchema, { abortEarly: false },
+      );
+      const arrErrors = [];
+      const Validatelist = () => {
+        for (let i = 0; i < error.details.length; i++) {
+          arrErrors.push(error.details[i].message);
+        }
+      };
+      if (error) {
+        `${Validatelist()}`;
+        if (error) return res.status(400).json({ status: 400, errors: arrErrors });
+      } else{
+    const decoded = jwt.decode(req.headers.token, process.env.SECRET_KEY);
+     const {id}=decoded.sub;
+    const findloan = await model.findOne(ID);
     if (findloan.length!=0) {
-      model.deleteproperty(id);
+      if(findloan[0].owner!=id)
+          {
+            return response.error(res,403,"you are not allowed to delete this property")
+          }
+          else{
+      model.deleteproperty(ID);
       return response.success(res,200,"property successfully deleted")
+          }
     } else {
       return response.error(res,404,"could not find that property")
       
     }
   }
 }
-
+}
 
 export default PropertyController;
