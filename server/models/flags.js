@@ -1,5 +1,5 @@
 import moment from 'moment';
-import queries from '../db/Queries';
+import queries from '../db/queries';
 import execute from '../src/connection';
 
 // Define a class for creating a flag
@@ -7,15 +7,12 @@ class Flag {
   
   async fetchOne(propertyId) {
     const foundproperty =await execute(queries.findoneproperty,[propertyId]);
-
     return foundproperty;
   }
-  
   async getOne(Id) {
     const oneflag =await execute(queries.getoneflags,[Id]);
     return oneflag;
   }
-
   // Fetch flag by id
   async findOneflags(flagId) {
     const foundflag = await execute(queries.findflags,[flagId]);

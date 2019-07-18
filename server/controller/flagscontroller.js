@@ -1,23 +1,21 @@
 import joi from 'joi';
 import Schema from '../helpers/inputvalidation';
 import model from '../models/property';
-import flag from '../models/flags';
-import server from '../helpers/response';
+import queries from '../db/queries';
 import execute from '../src/connection';
-import queries from '../db/Queries';
-
+import flag from '../models/flags';
+import response from '../helpers/response';
 class flagsController {
 
   static async getflags(req, res) {
     const flags = await execute(queries.getall);
-    return server(res,200,'List of all flags',flags)
-    
+    return response.success(res,200,'List of all flags',flags)  
   }
   // create flag function
   static async createflags(req, res) {
     const { property_id } = req.params;
     const { reason,description} = req.body;
-    const {error} = joi.validate(
+    const { error} = joi.validate(
       {
         reason,description,
       },
@@ -36,14 +34,13 @@ class flagsController {
       const getproperty = await model.findOne(property_id);
       if (getproperty.length!=0) {
         if (getproperty[0].status=='sold') {
-          return server(res,400,'this property have been sold !')
+          return response.error(res,400,'this property have been sold !')
         }
         const createdflag =await flag.createflag(req.body, property_id);
-        return server(res,200,'your flag have submit successfully ',createdflag)
-      
+        return response.success(res,200,'your flag have submit successfully ',createdflag
       }
       else{
-        return server(res,400,"that property doesn't exist")
+        return response.error(res,404,"that property doesn't exist")
       
     }
   }
@@ -54,11 +51,10 @@ class flagsController {
     const { id } = req.params;
     const getflag = await flag.findOneflags(id);
     if (getflag.length!=0) {
-      return server(res,200,'flag found',getflag)
-     
+      return response.success(res,200,'flag found',getflag)
     }
     else{
-     return server(res,400,"no flag found with that property id")
+     return response.error(res,404,"no flag found with that property id")
   
   }
 }
@@ -69,15 +65,10 @@ static async Oneflag(req, res) {
   const findflag = await flag.getOne(id);
 
   if (findflag.length!=0) {
-    return server(res,200,'flag found',findflag)
-    
+    return response.success(res,200,'flag found',findflag)
   }
-  return server(res,400,"could not find that flag")
-
-  
+  return response.error(res,404,"could not find that flag")
 }
-
-
 }
 
 
