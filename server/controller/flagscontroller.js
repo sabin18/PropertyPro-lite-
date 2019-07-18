@@ -40,7 +40,6 @@ class flagsController {
         }
         const createdflag = flag.createflag(req.body, property_id);
         return server(res,200,'your flag have submit successfully ',createdflag)
-      
       }
       else{
         return server(res,400,"that property doesn't exist")
