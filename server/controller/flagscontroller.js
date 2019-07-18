@@ -37,7 +37,7 @@ class flagsController {
           return response.error(res,400,'this property have been sold !')
         }
         const createdflag = flag.createflag(req.body, property_id);
-        return server(res,200,'your flag have submit successfully ',createdflag)
+        return response.success(res,200,'your flag have submit successfully ',createdflag)
       }
       else{
         return response.error(res,404,"that property doesn't exist")
