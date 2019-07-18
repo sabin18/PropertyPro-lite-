@@ -1,11 +1,11 @@
 import passwordHash from 'password-hash';
 import joi from 'joi';
 import authentication from '../helpers/authentication';
-import queries from '../db/Queries';
+import queries from '../db/queries';
 import execute from '../src/connection';
 import mymodel from '../models/user';
 import Schema from '../helpers/inputvalidation';
-import server from '../helpers/response';
+import response from '../helpers/response';
 
 
 class userController {
@@ -51,11 +51,12 @@ class userController {
       }); 
       const checkemail= await mymodel.userEmail(email); 
       if (checkemail.length!=0) {
-        return server(res,400,'email already exist please use another email!')
+        return response.error(res,400,'email already exist please use another email!')
       }
       mymodel.signupuser(req.body);
 
       res.status(201).send({
+        status:'201',
         message: 'user registered successfully',
         user: {
           token,
@@ -72,7 +73,7 @@ class userController {
 
   static async  getuser(req, res) {
     const users = await mymodel.getusers()
-    return server(res,200,'List of all users',users)
+    return response.success(res,200,'List of all users',users)
     
   }
 
@@ -81,10 +82,10 @@ class userController {
     const { id } = req.params;
     const user = await mymodel.getuser(id);
     if (user.length!=0) {
-      return server(res,200,'one user found ',user)
+      return response.success(res,200,'one user found ',user)
     }
     else{
-      return server(res,400,'No user found with that id')
+      return response.error(res,404,'No user found with that id')
     } 
   }
 
@@ -94,10 +95,7 @@ class userController {
     const specificUser =await mymodel.userEmail(email);
 
     if (specificUser.length==0) {
-      return res.status(400).json({
-        status: 400,
-        error: "No user with that email !"
-      });
+      return response.error(res,404,'No user with that email !')
     } else {
       if (passwordHash.verify(password,specificUser[0].password)) {
         const {
@@ -115,7 +113,8 @@ class userController {
         };
         const token = authentication.encodeToken(user);
         return res.status(200).send({
-          message: 'Logged in successfully',
+          status:'200',
+          message: 'Logged in successfully ',
           token,
           id: specificUser.id,
           firstname,
@@ -128,7 +127,7 @@ class userController {
 
         });
       } else {
-       return  res.status(400).send({ error: 'incorrect Password !' });
+        return response.error(res,401,'incorrect Password !') 
       }
     }
   }
@@ -157,14 +156,11 @@ class userController {
       const getuser =await mymodel.userEmail(email);
       if (getuser.length!=0) {
         await execute(queries.resetpassword,[await mymodel.setPassword(newpassword),email]);
-        return res.status(201).json({
-          status: 201,
-          message: 'password updated  succesfully',
-        });
+        return response.success(res,201,"password updated  succesfully")
       }
      
-    } 
-    return server(res,400,"can't find user with that email")  
+    }
+    return response.error(res,404,"can't find user with that email") 
   }
 }
 

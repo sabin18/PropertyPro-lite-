@@ -1,7 +1,7 @@
 import jwt from 'jwt-simple';
 import moment from 'moment';
 import dotenv from "dotenv";
-import server from '../helpers/response';
+import response from '../helpers/response';
 dotenv.config();
 
 const encodeToken = (user) => {
@@ -24,7 +24,7 @@ const decodeToken = (token) => {
 const UseraccessRequired = (req, res, next) => {
   const { token } = req.headers;
        if(!token){
-        return server(res,400,'Token needed to get access to this page')
+        return response.error(res,400,'Token needed to get access to this page')
        }
       const now = moment().unix();
       const decodedToken = decodeToken(token);
@@ -36,7 +36,7 @@ const UseraccessRequired = (req, res, next) => {
         if (decodedToken.sub.status == 'login') {
           next();
         } else {
-          return server(res,403,'Not authorized to this page you must be login before accessing to this page')
+          return  response.error(res,403,'Not authorized to this page you must be login before accessing to this page')
         }
       }
     

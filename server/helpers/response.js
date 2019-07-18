@@ -1,4 +1,6 @@
 
-const server = (res, status,message,data) => res.status(status).send({ status,message,data});
+const success = (res,status,message,data) => res.status(status).send({ status,message,data});
+const error = (res,status,error) => res.status(status).send({status,error});
  
-export default server
+export default {success,error}
+

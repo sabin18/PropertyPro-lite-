@@ -1,4 +1,4 @@
-import queries from '../db/Queries';
+import queries from '../db/queries';
 import execute from '../src/connection';
 import passwordHash from 'password-hash';
 

@@ -51,7 +51,7 @@ describe('user routes test', () => {
       .end((error, res) => {
         if (error) done(error);
         res.should.have.property('status').eql(400);
-        res.body.should.have.property('message').eql('email already exist please use another email!');
+        res.body.should.have.property('error').eql('email already exist please use another email!');
         res.body.should.be.a('object');
         done();
       });
@@ -111,7 +111,7 @@ describe('user routes test', () => {
         .get('/api/v1/users/145')
         .end((error, res) => {
           if (error) done(error);
-          res.should.have.status(400);
+          res.should.have.status(404);
           res.body.should.be.a('object');
           done();
         });
@@ -154,7 +154,7 @@ describe('user routes test', () => {
           .end((error, res) => {
             if (error) done(error);
             res.should.have.status(200);
-            res.body.should.have.property('message').eql('Logged in successfully');
+            res.body.should.have.property('message').eql('Logged in successfully ');
             res.body.should.have.property('token');
             done();
           });
@@ -170,7 +170,7 @@ describe('user routes test', () => {
           .send(users)
           .end((error, res) => {
             if (error) done(error);
-            res.should.have.status(400);
+            res.should.have.status(401);
             res.body.should.have.property('error');
             res.body.should.have.property('error').eql('incorrect Password !');
             done();
@@ -187,9 +187,9 @@ describe('user routes test', () => {
           .send(users)
           .end((error, res) => {
             if (error) done(error);
-            res.should.have.status(400);
+            res.should.have.status(404);
             res.body.should.be.a('object');
-            res.body.should.have.property('message').eql('No user with that email !');
+            res.body.should.have.property('error').eql('No user with that email !');
             done();
           });
       });
@@ -240,8 +240,8 @@ describe('user routes test', () => {
           .patch('/api/v1/user/resetpassword')
           .send(users)
           .end((err, res) => {
-            res.should.have.property('status').eql(400);
-            res.body.should.have.property('message').eql("can't find user with that email");
+            res.should.have.property('status').eql(404);
+            res.body.should.have.property('error').eql("can't find user with that email");
             res.body.should.be.a('object');
             done();
           });
