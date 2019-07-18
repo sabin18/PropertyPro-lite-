@@ -51,7 +51,7 @@ class userController {
       }); 
       const checkemail= await mymodel.userEmail(email); 
       if (checkemail.length!=0) {
-        return response.error(res,400,'email already exist please use another email!')
+        return response.error(res,409,'email already exist please use another email!')
       }
       mymodel.signupuser(req.body);
 
@@ -79,14 +79,31 @@ class userController {
 
   // get user by id
   static async  getOneuser(req, res) {
-    const { id } = req.params;
-    const user = await mymodel.getuser(id);
+    const { ID } = req.params;
+    const { error} = joi.validate(
+      {
+        ID,
+      },
+      Schema.parmSchema, { abortEarly: false },
+      );
+      const arrErrors = [];
+      const Validatelist = () => {
+        for (let i = 0; i < error.details.length; i++) {
+          arrErrors.push(error.details[i].message);
+        }
+      };
+      if (error) {
+        `${Validatelist()}`;
+        if (error) return res.status(400).json({ status: 400, errors: arrErrors });
+      } else{
+    const user = await mymodel.getuser(ID);
     if (user.length!=0) {
       return response.success(res,200,'one user found ',user)
     }
     else{
       return response.error(res,404,'No user found with that id')
     } 
+  }
   }
 
   // Login data processing
@@ -112,7 +129,7 @@ class userController {
           id: specificUser[0].id,
         };
         const token = authentication.encodeToken(user);
-        return res.status(200).send({
+        return res.status(200).json({
           status:'200',
           message: 'Logged in successfully ',
           token,

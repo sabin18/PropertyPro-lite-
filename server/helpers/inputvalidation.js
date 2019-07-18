@@ -24,6 +24,7 @@ const flagSchema = joi.object().keys({
   .required().trim().label('reason'),
   description: joi.string().min(3)
     .required().trim().label('discription'),
+  property_id: joi.number().integer().min(1),
 });
 
 const propertySchema = joi.object().keys({
@@ -36,21 +37,29 @@ const propertySchema = joi.object().keys({
     .required().trim().label('address'),
   price: joi.number().integer().min(1)
     .required(),
-
+  description: joi.string().min(3).max(15)
+    .required().trim().label('description'),
  
 });
 const UpdateSchema = joi.object().keys({
   type: joi.string().min(8).valid(['1 bedroom','2 bedroom','3 bedroom','4 bedroom','5 bedroom','6 bedroom','7 bedroom','mini flat']).trim(),
   price: joi.number().integer().min(1) ,
+  ID: joi.number().integer().min(1),
+
  
+});
+
+const parmSchema = joi.object().keys({
+  ID: joi.number().integer().min(1),
 });
 
 const markSchema = joi.object().keys({
   status: joi.string().min(4).max(4).valid(['sold'])
     .required()
     .trim(),
+    ID: joi.number().integer().min(1),
 });
 
 export default {
-  userSchema, flagSchema,propertySchema,UpdateSchema ,markSchema,resetpassSchema,
+  userSchema, flagSchema,propertySchema,UpdateSchema ,markSchema,resetpassSchema,parmSchema,
 };

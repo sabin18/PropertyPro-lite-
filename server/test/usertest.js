@@ -50,7 +50,7 @@ describe('user routes test', () => {
       .send(users)
       .end((error, res) => {
         if (error) done(error);
-        res.should.have.property('status').eql(400);
+        res.should.have.property('status').eql(409);
         res.body.should.have.property('error').eql('email already exist please use another email!');
         res.body.should.be.a('object');
         done();
@@ -112,6 +112,17 @@ describe('user routes test', () => {
         .end((error, res) => {
           if (error) done(error);
           res.should.have.status(404);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
+    it('It should not get  a particular user with invalid id', (done) => {
+      chai
+        .request(app)
+        .get('/api/v1/users/yyhsh')
+        .end((error, res) => {
+          if (error) done(error);
+          res.should.have.status(400);
           res.body.should.be.a('object');
           done();
         });
