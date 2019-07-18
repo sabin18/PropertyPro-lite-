@@ -44,10 +44,11 @@ before('it should be able to  create a third property', (done) => {
       .field("city", "kigali")
       .field("address", "kimironko")
       .field("price", "700")
+      .field("description", "onestreet")
       .attach('image','server/image/passion.jpg','passion.jpg','passion.jpg')
     .set({token:userToken})
     .end((err, res) => {
-      res.should.have.property('status').eql(200);
+      res.should.have.property('status').eql(201);
       res.body.should.have.property('message').eql('property created successfully');
       res.body.should.be.a('object');
 
@@ -80,10 +81,11 @@ describe('flags routes test', () => {
         .field("city", "kigali")
         .field("address", "kimironko")
         .field("price", "700")
+        .field("description", "10street")
         .attach('image','server/image/passion.jpg','passion.jpg','passion.jpg')
       .set({token:userToken})
       .end((err, res) => {
-        res.should.have.property('status').eql(200);
+        res.should.have.property('status').eql(201);
         res.body.should.have.property('message').eql('property created successfully');
         res.body.should.be.a('object');
   
@@ -91,8 +93,72 @@ describe('flags routes test', () => {
       });        
 
   });
+  it('it should be able to  create a second property', (done) => {
+    chai.request(app)
+      .post('/api/v1/property')
+      .field("id","3")
+        .field("created_On", "12-06-2019 10:43:46")
+        .field("owner", "1")
+        .field("ownerPhoneNumber", "078865544")
+        .field("ownerEmail", "benmugabe@gmail.com")
+        .field("status", "sold")
+        .field("type", "mini flat")
+        .field("city", "kigali")
+        .field("address", "kimironko")
+        .field("price", "700")
+        .field("description", "101sreet")
+        .attach('image','server/image/passion.jpg','passion.jpg','passion.jpg')
+      .set({token:userToken})
+      .end((err, res) => {
+        res.should.have.property('status').eql(201);
+        res.body.should.have.property('message').eql('property created successfully');
+        res.body.should.be.a('object');
+  
+        done();
+      });        
 
+  });
+  
+it('it should be able to record a flag', (done) => {
+    const flag = {
+      id: 1,
+      createdon: "17-07-2019 17:07:61",
+      property_id: 3,
+      reason: "weird demands",
+      description: "the price is too expensive"
+  };
 
+    chai.request(app)
+      .post('/api/v1/3/flags')
+      .send(flag)
+      .end((err, res) => {
+        res.should.have.property('status').eql(200);
+        res.body.should.have.property('message').eql('your flag have submit successfully ');
+        res.body.should.be.a('object');
+        done();
+      });
+  });
+
+  it('it should not be able to record a flag with invalid id', (done) => {
+    const flag = {
+      id: 1,
+      createdon: "17-07-2019 17:07:61",
+      property_id: 3,
+      reason: "weird demands",
+      description: "the price is too expensive"
+  };
+
+    chai.request(app)
+      .post('/api/v1/trtr/flags')
+      .send(flag)
+      .end((err, res) => {
+        res.should.have.property('status').eql(400);
+        res.body.should.be.a('object');
+        done();
+      });
+  });
+
+ 
   it('reason must be required to record flags', (done) => {
     const flags = {
      reason: " ",
@@ -131,43 +197,55 @@ describe('flags routes test', () => {
       });
   });
  
-
-  it('it should be not able  mark a property as sold', (done) => {
-    const property = {
-         id: 2,
-         created_On: "12-06-2019 10:43:46",
-         owner: 2,
-         ownerPhoneNumber: "078865544",
-         ownerEmail: "benmugabe@gmail.com",
-         status: "sold",
-         type: "mini flat",
-         city: "kigali",
-         address: "kimironko",
-         price: "700",
-         image_url: "images/imageshjf/.jpg"
-     }; 
- 
-     chai.request(app)
-       .patch('/api/v1/property/29875/sold')
-       .send(property)
-       .end((err, res) => {
-         res.should.have.property('status').eql(404);
-         res.body.should.be.a('object');
-         done();
-       });
-   });
-
- 
-  it('it should not GET a single flag', (done) => {
+ it('it should GET a single flag', (done) => {
     chai.request(app)
-      .get('/api/v1/flags/11667')
+      .get('/api/v1/flags/1')
       .end((err, res) => {
-        res.should.have.property('status').eql(404);
+        res.should.have.property('status').eql(200);
         res.body.should.be.a('object');
         done();
       });
   });
 
+  it('it should not GET a single flag with invalid id', (done) => {
+    chai.request(app)
+      .get('/api/v1/flags/tryr')
+      .end((err, res) => {
+        res.should.have.property('status').eql(400);
+        res.body.should.be.a('object');
+        done();
+      });
+  });
+
+it('it should not GET a single flag', (done) => {
+  chai.request(app)
+    .get('/api/v1/flags/11667')
+    .end((err, res) => {
+      res.should.have.property('status').eql(404);
+      res.body.should.be.a('object');
+      done();
+    });
+});
+
+it('it should GET a single property flag', (done) => {
+  chai.request(app)
+    .get('/api/v1/property/3/flags')
+    .end((err, res) => {
+      res.should.have.property('status').eql(200);
+      res.body.should.be.a('object');
+      done();
+    });
+});
+it('it should not GET a single property flag with invalid id', (done) => {
+  chai.request(app)
+    .get('/api/v1/property/ret/flags')
+    .end((err, res) => {
+      res.should.have.property('status').eql(400);
+      res.body.should.be.a('object');
+      done();
+    });
+});
+ 
   it('it should not GET a single property flag', (done) => {
     chai.request(app)
     .get('/api/v1/property/133/flags')
