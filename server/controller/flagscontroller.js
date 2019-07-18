@@ -36,7 +36,7 @@ class flagsController {
         if (getproperty[0].status=='sold') {
           return response.error(res,400,'this property have been sold !')
         }
-        const createdflag = flag.createflag(req.body, property_id);
+        const createdflag = await flag.createflag(req.body, property_id);
         return response.success(res,200,'your flag have submit successfully ',createdflag)
       }
       else{
