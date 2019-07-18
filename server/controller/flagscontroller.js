@@ -68,11 +68,7 @@ static async Oneflag(req, res) {
     return response.success(res,200,'flag found',findflag)
   }
   return response.error(res,404,"could not find that flag")
-
-  
 }
-
-
 }
 
 

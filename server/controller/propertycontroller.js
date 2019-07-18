@@ -4,7 +4,7 @@ import Schema from '../helpers/inputvalidation';
 import model from '../models/property';
 import cloudinary from 'cloudinary';
 import dotenv from "dotenv";
-import queries from '../db/Queries';
+import queries from '../db/queries';
 import execute from '../src/connection';
 import response from '../helpers/response';
 dotenv.config();

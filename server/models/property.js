@@ -1,6 +1,7 @@
 import moment from 'moment';
-import queries from '../db/Queries';
+import queries from '../db/queries';
 import execute from '../src/connection';
+
 // Define a class for creating a property
 class Property {
   

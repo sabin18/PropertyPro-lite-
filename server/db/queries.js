@@ -11,7 +11,6 @@ const updateproperty=  'UPDATE property SET type = $1, price = $2, image_url = $
 const deletepro='DELETE FROM property WHERE id =$1';
 const mark = 'UPDATE property SET status = $1 WHERE id = $2 RETURNING * ';
 
-
 sqlQueries.getproperty = getproperty;
 sqlQueries.insertproperty = insertproperty;
 sqlQueries.findtype = findtype;
@@ -35,6 +34,7 @@ sqlQueries.findoneuser = findoneuser;
 sqlQueries.resetpassword = resetpassword;
 
 //insert flag into database
+
 const findflags= 'SELECT * FROM flags WHERE property_id =$1';
 const insertflags = 'INSERT INTO flags (createdon,property_id,reason,description) VALUES($1,$2,$3,$4) RETURNING * ';
 const getall= 'SELECT * FROM flags';
