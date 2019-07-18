@@ -4,9 +4,9 @@ import Schema from '../helpers/inputvalidation';
 import model from '../models/property';
 import cloudinary from 'cloudinary';
 import dotenv from "dotenv";
-import queries from '../db/Queries';
+import queries from '../db/queries';
 import execute from '../src/connection';
-import server from '../helpers/response';
+import response from '../helpers/response';
 dotenv.config();
 
 /*configure our cloudinary*/
@@ -21,7 +21,7 @@ class PropertyController {
   
    static async GetPropertyType(req, res) {
     const {type}=req.query;
-    const { error, value } = joi.validate(
+    const { error } = joi.validate(
       {
         type,
       },
@@ -35,15 +35,15 @@ class PropertyController {
     if(!type)
     {
       const properties= await execute(queries.getproperty);
-      return server(res,200,'List of all properties',properties)
+      return response.success(res,200,'List of all properties',properties)
       
     }
     if (checkproperty.length!=0) {
-      return server(res,200,'List of properties',checkproperty)
+      return response.success(res,200,'List of properties',checkproperty)
       
     }
     else{
-      return server(res,404,"can't find any property")
+      return response.error(res,404,"can't find any property")
     
   }
   }
@@ -52,7 +52,7 @@ class PropertyController {
 // create  property function
    static async createproperty(req, res) {
     if(!req.files) {
-      return server(res,404,"please upload image !")
+      return response.error(res,404,"please upload image !")
     }
     else {
       
@@ -90,7 +90,7 @@ class PropertyController {
         if (error) return res.status(400).json({ status: 400, errors: arrErrors });
       } else  {
       const propertydata = await model.createproperty(req.body,decodedData,insertimage);
-      return server(res,200,'property created successfully',propertydata)
+      return response.success(res,200,'property created successfully',propertydata)
       
     } 
   });
@@ -125,14 +125,14 @@ class PropertyController {
         `${Validatelist()}`;
         if (error) return res.status(400).json({ status: 400, errors: arrErrors });
       }  else {
-      const getproperty = model.findOne(id);
-      if (getproperty) {
+      const getproperty =await model.findOne(id);
+      if (getproperty.length!=0) {
          await model.update(type,price,result.url,id);
         const updatedproperty=  await model.findOne(id);
-        return server(res,201,'property updated succesfully',updatedproperty)
+        return response.success(res,200,'property updated succesfully',updatedproperty)
       }
       else{
-        return server(res,400,"could not find that property")
+        return response.error(res,404,"could not find that property")
     }
     }
   });
@@ -162,10 +162,10 @@ class PropertyController {
         if (getproperty.length!=0) {
         model.MarkAsSold(status,id);
         const getmarked = await model.findOne(id);
-        return server(res,201,'property updated succesfully',getmarked)
+        return response.success(res,200,'property updated succesfully',getmarked)
       }
       else{
-        return server(res,400,"could not find that property")
+        return response.error(res,404,"could not find that property")
         
     }
     }
@@ -175,10 +175,10 @@ class PropertyController {
    static async getOneproperty(req, res) {
     const { id } = req.params;
     const findproperty = await model.findOne(id);
-    if (findproperty) {
-      return server(res,200,'property found',findproperty)
+    if (findproperty.length!=0) {
+      return response.success(res,200,'property found',findproperty)
     }
-    return server(res,400,"could not find that property")
+    return response.error(res,404,"could not find that property")
     
   }
 //delete property function 
@@ -187,9 +187,9 @@ class PropertyController {
     const findloan = await model.findOne(id);
     if (findloan.length!=0) {
       model.deleteproperty(id);
-      return server(res,200,"property successfully deleted")
+      return response.success(res,200,"property successfully deleted")
     } else {
-      return server(res,400,"could not find that property")
+      return response.error(res,404,"could not find that property")
       
     }
   }

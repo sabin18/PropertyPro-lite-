@@ -18,7 +18,7 @@ before('Create a user who will create a property', (done) => {
     lastname: 'kivin',
     password: '5858949',
     address: 'kigali',
-    PhoneNumber:'0789765444',
+    phonenumber:'0789765444',
     status: 'login',
     isadmin: 'false',
   };
@@ -63,7 +63,7 @@ before('Create an unkown user', (done) => {
     lastname: 'kiin',
     password: '558949',
     address: 'kigali',
-    PhoneNumber:'0789765444',
+    phonenumber:'0789765444',
     status: 'Not login',
     isadmin: 'false',
 
@@ -99,7 +99,7 @@ describe('property routes test', () => {
       .set({type:'2 bedroom'})
       .end((err, res) => {
         res.should.have.property('status').eql(404);
-        res.body.should.have.property('message').eql("can't find any property");
+        res.body.should.have.property('error').eql("can't find any property");
         res.body.should.be.a('object');
         done();
       });
@@ -123,7 +123,31 @@ describe('property routes test', () => {
       .post('/api/v1/property')
       .field("id","1")
       .field("created_On", "12-06-2019 10:43:46")
-      .field("owner", "2")
+      .field("owner", "1")
+      .field("ownerPhoneNumber", "078865544")
+      .field("ownerEmail", "benmugabe@gmail.com")
+      .field("status", "available")
+      .field("type", "mini flat")
+      .field("city", "kigali")
+      .field("address", "kimironko")
+      .field("price", "700")
+      .attach('image','server/image/passion.jpg','passion.jpg')
+      .set({token:userToken})
+      .end((err, res) => {
+        res.should.have.property('status').eql(200);
+        res.body.should.have.property('message').eql('property created successfully');
+        res.body.should.be.a('object');
+
+        done();
+      });
+  });
+  it('it should be able to  create a property', (done) => {
+   
+    chai.request(app)
+      .post('/api/v1/property')
+      .field("id","3")
+      .field("created_On", "12-06-2019 10:43:46")
+      .field("owner", "1")
       .field("ownerPhoneNumber", "078865544")
       .field("ownerEmail", "benmugabe@gmail.com")
       .field("status", "available")
@@ -176,7 +200,7 @@ describe('property routes test', () => {
       .set({  })
       .end((err, res) => {
         res.should.have.property('status').eql(400);
-        res.body.should.have.property('message').eql('Token needed to get access to this page');
+        res.body.should.have.property('error').eql('Token needed to get access to this page');
 
         done();
       });
@@ -204,7 +228,7 @@ describe('property routes test', () => {
       .set({ token: '' })
       .end((err, res) => {
         res.should.have.property('status').eql(400);
-        res.body.should.have.property('message').eql('Token needed to get access to this page');
+        res.body.should.have.property('error').eql('Token needed to get access to this page');
 
         done();
       });
@@ -230,7 +254,7 @@ describe('property routes test', () => {
       .set({ token:aunthorizedToken})
       .end((err, res) => {
         res.should.have.property('status').eql(403);
-        res.body.should.have.property('message').eql('Not authorized to this page you must be login before accessing to this page');
+        res.body.should.have.property('error').eql('Not authorized to this page you must be login before accessing to this page');
 
         done();
       });
@@ -263,7 +287,7 @@ describe('property routes test', () => {
 
   it('it should GET a single property', (done) => {
     chai.request(app)
-      .get('/api/v1/property/1')
+      .get('/api/v1/property/4')
       .end((err, res) => {
         res.should.have.property('status').eql(200);
         res.body.should.be.a('object');
@@ -273,9 +297,9 @@ describe('property routes test', () => {
 
   it('it should not GET a single property', (done) => {
     chai.request(app)
-      .get('/api/v1/property/11')
+      .get('/api/v1/property/1445')
       .end((err, res) => {
-        res.should.have.property('status').eql(400);
+        res.should.have.property('status').eql(404);
         res.body.should.be.a('object');
         done();
       });
@@ -284,8 +308,8 @@ describe('property routes test', () => {
   it('it should be able to update a property', (done) => {
     
     chai.request(app)
-      .patch('/api/v1/property/1')
-      .field("id","1")
+      .patch('/api/v1/property/3')
+      .field("id","3")
       .field("created_On", "12-06-2019 10:43:46")
       .field("owner", "2")
       .field("ownerPhoneNumber", "078865544")
@@ -297,7 +321,7 @@ describe('property routes test', () => {
       .field("price", "700")
       .attach('image','server/image/passion.jpg','passion.jpg')
       .end((err, res) => {
-        res.should.have.property('status').eql(201);
+        res.should.have.property('status').eql(200);
         res.body.should.be.a('object');
         done();
       });
@@ -305,7 +329,7 @@ describe('property routes test', () => {
 
   it('it should  not be able to update a property', (done) => {
     chai.request(app)
-      .patch('/api/v1/property/12')
+      .patch('/api/v1/property/1445')
       .field("id","1")
       .field("created_On", "12-06-2019 10:43:46")
       .field("owner", "2")
@@ -318,7 +342,7 @@ describe('property routes test', () => {
       .field("price", "700")
       .attach('image','server/image/passion.jpg','passion.jpg')
       .end((err, res) => {
-        res.should.have.property('status').eql(400);
+        res.should.have.property('status').eql(404);
         res.body.should.be.a('object');
         done();
       });
@@ -349,7 +373,7 @@ describe('property routes test', () => {
 
   it('it should be able to mark a property as sold', (done) => {
    const property = {
-        id: 1,
+        id: 3,
         created_On: "12-06-2019 10:43:46",
         owner: 2,
         ownerPhoneNumber: "078865544",
@@ -363,10 +387,10 @@ describe('property routes test', () => {
     }; 
 
     chai.request(app)
-      .patch('/api/v1/property/1/sold')
+      .patch('/api/v1/property/3/sold')
       .send(property)
       .end((err, res) => {
-        res.should.have.property('status').eql(201);
+        res.should.have.property('status').eql(200);
         res.body.should.be.a('object');
         done();
       });
@@ -391,7 +415,7 @@ describe('property routes test', () => {
       .patch('/api/v1/property/166/sold')
       .send(property)
       .end((err, res) => {
-        res.should.have.property('status').eql(400);
+        res.should.have.property('status').eql(404);
         res.body.should.be.a('object');
         done();
       });
@@ -414,21 +438,11 @@ describe('property routes test', () => {
   });
   
  
-  it('it should be able to Delete a property', (done) => {
-    chai.request(app)
-      .delete('/api/v1/property/1')
-      .end((err, res) => {
-        res.should.have.property('status').eql(200);
-        res.body.should.be.a('object');
-        done();
-      });
-  });
-
-  it('it should not be able to Delete a property', (done) => {
+   it('it should not be able to Delete a property', (done) => {
     chai.request(app)
       .delete('/api/v1/property/21')
       .end((err, res) => {
-        res.should.have.property('status').eql(400);
+        res.should.have.property('status').eql(404);
         res.body.should.be.a('object');
         done();
       });
