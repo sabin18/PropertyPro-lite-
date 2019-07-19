@@ -87,16 +87,16 @@ To get the project up and running on your local machine, please follow these ins
 | POST       | /api/v1/auth/signup             | public                       | create an account                     |
 | POST       | /api/v1/auth/signin             | public                       | login to the app                      |
 | POST       | /api/v1/property/               | private(user)                | create property adrvert               |
-| GET        | /api/v1/properties/               | public                       | get all property                      |
-| GET        | /api/v1/property/id             | public                       | get specific property                 |
-| PATCH      | /api/v1/property/id             | public                       | Edit property                         |
+| GET        | /api/v1/properties/             | public                       | get all property                      |
+| GET        | /api/v1/property/ID             | public                       | get specific property                 |
+| PATCH      | /api/v1/property/ID             | public                       | Edit property                         |
 | PATCH      | /api/v1/property/sold           | public                       | mark property as sold                 |
 | POST       | /api/v1/property_id/flags       | public                       | post a flag                           |
 | GET        | /api/v1/flags                   | public                       | get all flags                         |
-| GET        | /api/v1/property/:id/flags      | public                       | get flags of specific property        |
-| GET        | /api/v1/flags/id                | public                       | get a specific flags                  |
+| GET        | /api/v1/property/:ID/flags      | public                       | get flags of specific property        |
+| GET        | /api/v1/flags/ID                | public                       | get a specific flags                  |
 | GET        | /api/v1/users                   | public                       | get all users                         |
-| GET        | /api/v1/users/id                | public                       | get a specific user                   |
+| GET        | /api/v1/users/ID                | public                       | get a specific user                   |
   
 ## Frontend
 
