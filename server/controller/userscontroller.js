@@ -130,7 +130,7 @@ class userController {
         };
         const token = authentication.encodeToken(user);
         return res.status(200).json({
-          status:'200',
+          Status:'200',
           message: 'Logged in successfully ',
           token,
           id: specificUser.id,
