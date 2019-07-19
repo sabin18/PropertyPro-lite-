@@ -15,7 +15,7 @@ describe('user routes test', () => {
       lastname: 'kivin',
       password: '5858949',
       address: 'kigali',
-      PhoneNumber:'0789765444',
+      phonenumber:'0789765444',
       status: 'Not login',
       isadmin: 'false',
     };
@@ -40,7 +40,7 @@ describe('user routes test', () => {
       lastname: 'kivin',
       password: '5858949',
       address: 'kigali',
-      PhoneNumber:'0789765444',
+      phonenumber:'0789765444',
       status: 'Not login',
       isadmin: 'false',
     };
@@ -50,7 +50,7 @@ describe('user routes test', () => {
       .send(users)
       .end((error, res) => {
         if (error) done(error);
-        res.should.have.property('status').eql(400);
+        res.should.have.property('status').eql(409);
         res.body.should.have.property('error').eql('email already exist please use another email!');
         res.body.should.be.a('object');
         done();
@@ -111,6 +111,17 @@ describe('user routes test', () => {
         .get('/api/v1/users/145')
         .end((error, res) => {
           if (error) done(error);
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
+    it('It should not get  a particular user with invalid id', (done) => {
+      chai
+        .request(app)
+        .get('/api/v1/users/yyhsh')
+        .end((error, res) => {
+          if (error) done(error);
           res.should.have.status(400);
           res.body.should.be.a('object');
           done();
@@ -126,7 +137,7 @@ describe('user routes test', () => {
           lastname: 'kivin',
           password: '5858949',
           address: 'kigali',
-          PhoneNumber:'0789765444',
+          phonenumber:'0789765444',
           status: 'login',
           isadmin: 'false',
         };
@@ -154,7 +165,7 @@ describe('user routes test', () => {
           .end((error, res) => {
             if (error) done(error);
             res.should.have.status(200);
-            res.body.should.have.property('message').eql('Logged in successfully');
+            res.body.should.have.property('message').eql('Logged in successfully ');
             res.body.should.have.property('token');
             done();
           });
@@ -170,7 +181,7 @@ describe('user routes test', () => {
           .send(users)
           .end((error, res) => {
             if (error) done(error);
-            res.should.have.status(400);
+            res.should.have.status(401);
             res.body.should.have.property('error');
             res.body.should.have.property('error').eql('incorrect Password !');
             done();
@@ -187,7 +198,7 @@ describe('user routes test', () => {
           .send(users)
           .end((error, res) => {
             if (error) done(error);
-            res.should.have.status(400);
+            res.should.have.status(404);
             res.body.should.be.a('object');
             res.body.should.have.property('error').eql('No user with that email !');
             done();
@@ -224,7 +235,7 @@ describe('user routes test', () => {
           .end((error, res) => {
             if (error) done(error);
             res.should.have.property('status').eql(400);
-            res.body.should.have.property('error');
+            res.body.should.have.property('errors');
             done();
           });
         });
@@ -240,7 +251,7 @@ describe('user routes test', () => {
           .patch('/api/v1/user/resetpassword')
           .send(users)
           .end((err, res) => {
-            res.should.have.property('status').eql(400);
+            res.should.have.property('status').eql(404);
             res.body.should.have.property('error').eql("can't find user with that email");
             res.body.should.be.a('object');
             done();

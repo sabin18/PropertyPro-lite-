@@ -18,7 +18,7 @@ before('Create a user who will create a property', (done) => {
     lastname: 'kivin',
     password: '5858949',
     address: 'kigali',
-    PhoneNumber:'0789765444',
+    phonenumber:'0789765444',
     status: 'login',
     isadmin: 'false',
   };
@@ -63,7 +63,7 @@ before('Create an unkown user', (done) => {
     lastname: 'kiin',
     password: '558949',
     address: 'kigali',
-    PhoneNumber:'0789765444',
+    phonenumber:'0789765444',
     status: 'Not login',
     isadmin: 'false',
 
@@ -83,7 +83,7 @@ before('Create an unkown user', (done) => {
 describe('property routes test', () => {
   it('it should GET all property', (done) => {
     chai.request(app)
-      .get('/api/v1/property')
+      .get('/api/v1/properties')
       .end((err, res) => {
         res.should.have.property('status').eql(200);
         res.body.should.be.a('object');
@@ -95,23 +95,23 @@ describe('property routes test', () => {
 
   it('it should not GET all property of specific type', (done) => {
     chai.request(app)
-      .get('/api/v1/property?type=2 bedroom')
+      .get('/api/v1/properties?type=2 bedroom')
       .set({type:'2 bedroom'})
       .end((err, res) => {
         res.should.have.property('status').eql(404);
-        res.body.should.have.property('message').eql("can't find any property");
+        res.body.should.have.property('error').eql("can't find any property");
         res.body.should.be.a('object');
         done();
       });
   });
 
-  it('it should not GET all property of wrong type', (done) => {
+  it('it should not GET all properties of wrong type', (done) => {
     chai.request(app)
-      .get('/api/v1/property?type=')
+      .get('/api/v1/properties?type=')
       .set({type:''})
-      .end((error, res) => {
+      .end((errors, res) => {
         res.should.have.property('status').eql(400);
-        if (error) done(error);
+        if (errors) done(errors);
         res.body.should.have.property('error');
         done();
       });
@@ -123,7 +123,7 @@ describe('property routes test', () => {
       .post('/api/v1/property')
       .field("id","1")
       .field("created_On", "12-06-2019 10:43:46")
-      .field("owner", "2")
+      .field("owner", "1")
       .field("ownerPhoneNumber", "078865544")
       .field("ownerEmail", "benmugabe@gmail.com")
       .field("status", "available")
@@ -131,10 +131,36 @@ describe('property routes test', () => {
       .field("city", "kigali")
       .field("address", "kimironko")
       .field("price", "700")
+      .field("description", "street54")
       .attach('image','server/image/passion.jpg','passion.jpg')
       .set({token:userToken})
       .end((err, res) => {
-        res.should.have.property('status').eql(200);
+        res.should.have.property('status').eql(201);
+        res.body.should.have.property('message').eql('property created successfully');
+        res.body.should.be.a('object');
+
+        done();
+      });
+  });
+  it('it should be able to  create a property', (done) => {
+   
+    chai.request(app)
+      .post('/api/v1/property')
+      .field("id","5")
+      .field("created_On", "12-06-2019 10:43:46")
+      .field("owner", "1")
+      .field("ownerPhoneNumber", "078865544")
+      .field("ownerEmail", "benmugabe@gmail.com")
+      .field("status", "available")
+      .field("type", "mini flat")
+      .field("city", "kigali")
+      .field("address", "kimironko")
+      .field("price", "700")
+      .field("description", "stree4")
+      .attach('image','server/image/passion.jpg','passion.jpg')
+      .set({token:userToken})
+      .end((err, res) => {
+        res.should.have.property('status').eql(201);
         res.body.should.have.property('message').eql('property created successfully');
         res.body.should.be.a('object');
 
@@ -142,9 +168,35 @@ describe('property routes test', () => {
       });
   });
 
-  it('it should GET all property of specific type', (done) => {
+  it('it should be able to  create a property', (done) => {
+   
     chai.request(app)
-      .get('/api/v1/property?type=mini flat')
+      .post('/api/v1/property')
+      .field("id","4")
+      .field("created_On", "12-06-2019 10:43:46")
+      .field("owner", "1")
+      .field("ownerPhoneNumber", "078865544")
+      .field("ownerEmail", "benmugabe@gmail.com")
+      .field("status", "available")
+      .field("type", "mini flat")
+      .field("city", "kigali")
+      .field("address", "kimironko")
+      .field("price", "700")
+      .field("description", "ste4")
+      .attach('image','server/image/passion.jpg','passion.jpg')
+      .set({token:userToken})
+      .end((err, res) => {
+        res.should.have.property('status').eql(201);
+        res.body.should.have.property('message').eql('property created successfully');
+        res.body.should.be.a('object');
+
+        done();
+      });
+  });
+
+  it('it should GET all properties of specific type', (done) => {
+    chai.request(app)
+      .get('/api/v1/properties?type=mini flat')
       .set({type:'mini flat'})
       .end((err, res) => {
         res.should.have.property('status').eql(200);
@@ -256,14 +308,14 @@ describe('property routes test', () => {
       .end((error, res) => {
         res.should.have.property('status').eql(400);
         if (error) done(errors);
-        res.body.should.have.property('error');
+        res.body.should.have.property('errors');
         done();
       });
   });
 
   it('it should GET a single property', (done) => {
     chai.request(app)
-      .get('/api/v1/property/1')
+      .get('/api/v1/property/4')
       .end((err, res) => {
         res.should.have.property('status').eql(200);
         res.body.should.be.a('object');
@@ -273,7 +325,17 @@ describe('property routes test', () => {
 
   it('it should not GET a single property', (done) => {
     chai.request(app)
-      .get('/api/v1/property/11')
+      .get('/api/v1/property/1445')
+      .end((err, res) => {
+        res.should.have.property('status').eql(404);
+        res.body.should.be.a('object');
+        done();
+      });
+  });
+
+  it('it should not GET a single property with invalid id', (done) => {
+    chai.request(app)
+      .get('/api/v1/property/ytryry')
       .end((err, res) => {
         res.should.have.property('status').eql(400);
         res.body.should.be.a('object');
@@ -284,10 +346,10 @@ describe('property routes test', () => {
   it('it should be able to update a property', (done) => {
     
     chai.request(app)
-      .patch('/api/v1/property/1')
-      .field("id","1")
+      .patch('/api/v1/property/5')
+      .field("id","5")
       .field("created_On", "12-06-2019 10:43:46")
-      .field("owner", "2")
+      .field("owner", "1")
       .field("ownerPhoneNumber", "078865544")
       .field("ownerEmail", "benmugabe@gmail.com")
       .field("status", "available")
@@ -296,8 +358,9 @@ describe('property routes test', () => {
       .field("address", "kimironko")
       .field("price", "700")
       .attach('image','server/image/passion.jpg','passion.jpg')
+      .set({token:userToken})
       .end((err, res) => {
-        res.should.have.property('status').eql(201);
+        res.should.have.property('status').eql(200);
         res.body.should.be.a('object');
         done();
       });
@@ -305,7 +368,7 @@ describe('property routes test', () => {
 
   it('it should  not be able to update a property', (done) => {
     chai.request(app)
-      .patch('/api/v1/property/12')
+      .patch('/api/v1/property/1445')
       .field("id","1")
       .field("created_On", "12-06-2019 10:43:46")
       .field("owner", "2")
@@ -317,6 +380,29 @@ describe('property routes test', () => {
       .field("address", "kimironko")
       .field("price", "700")
       .attach('image','server/image/passion.jpg','passion.jpg')
+      .set({token:userToken})
+      .end((err, res) => {
+        res.should.have.property('status').eql(404);
+        res.body.should.be.a('object');
+        done();
+      });
+  });
+
+  it('it should  not be able to update a property with wrong id', (done) => {
+    chai.request(app)
+      .patch('/api/v1/property/try')
+      .field("id","1")
+      .field("created_On", "12-06-2019 10:43:46")
+      .field("owner", "2")
+      .field("ownerPhoneNumber", "078865544")
+      .field("ownerEmail", "benmugabe@gmail.com")
+      .field("status", "available")
+      .field("type", "2 bedroom")
+      .field("city", "kigali")
+      .field("address", "kimironko")
+      .field("price", "700")
+      .attach('image','server/image/passion.jpg','passion.jpg')
+      .set({token:userToken})
       .end((err, res) => {
         res.should.have.property('status').eql(400);
         res.body.should.be.a('object');
@@ -339,19 +425,20 @@ describe('property routes test', () => {
       .field("address", "kimironko")
       .field("price", "700")
       .attach('image','server/image/passion.jpg','passion.jpg')
+      .set({token:userToken})
       .end((error, res) => {
         res.should.have.property('status').eql(400);
         if (error) done(error);
-        res.body.should.have.property('error');
+        res.body.should.have.property('errors');
         done();
       });
   });
 
   it('it should be able to mark a property as sold', (done) => {
    const property = {
-        id: 1,
+        id: 5,
         created_On: "12-06-2019 10:43:46",
-        owner: 2,
+        owner: 1,
         ownerPhoneNumber: "078865544",
         ownerEmail: "benmugabe@gmail.com",
         status: "sold",
@@ -363,14 +450,67 @@ describe('property routes test', () => {
     }; 
 
     chai.request(app)
-      .patch('/api/v1/property/1/sold')
+      .patch('/api/v1/property/5/sold')
+      .set({token:userToken})
       .send(property)
       .end((err, res) => {
-        res.should.have.property('status').eql(201);
+        res.should.have.property('status').eql(200);
         res.body.should.be.a('object');
         done();
       });
   });
+
+  it('it should not be able to mark a property as sold with imvalid token', (done) => {
+    const property = {
+         id: 5,
+         created_On: "12-06-2019 10:43:46",
+         owner: 1,
+         ownerPhoneNumber: "078865544",
+         ownerEmail: "benmugabe@gmail.com",
+         status: "sold",
+         type: "mini flat",
+         city: "kigali",
+         address: "kimironko",
+         price: "700",
+         image_url: "images/imageshjf/.jpg"
+     }; 
+ 
+     chai.request(app)
+       .patch('/api/v1/property/5/sold')
+       .set({ token:userToken2})
+       .send(property)
+       .end((err, res) => {
+         res.should.have.property('status').eql(403);
+         res.body.should.be.a('object');
+         done();
+       });
+   });
+
+  it('it should be able to mark a property as sold with invalid id', (done) => {
+    const property = {
+         id: 5,
+         created_On: "12-06-2019 10:43:46",
+         owner: 1,
+         ownerPhoneNumber: "078865544",
+         ownerEmail: "benmugabe@gmail.com",
+         status: "sold",
+         type: "mini flat",
+         city: "kigali",
+         address: "kimironko",
+         price: "700",
+         image_url: "images/imageshjf/.jpg"
+     }; 
+ 
+     chai.request(app)
+       .patch('/api/v1/property/rer/sold')
+       .set({token:userToken})
+       .send(property)
+       .end((err, res) => {
+         res.should.have.property('status').eql(400);
+         res.body.should.be.a('object');
+         done();
+       });
+   });
 
   it('it should be not able to mark a property as sold', (done) => {
    const property = {
@@ -390,8 +530,9 @@ describe('property routes test', () => {
     chai.request(app)
       .patch('/api/v1/property/166/sold')
       .send(property)
+      .set({token:userToken})
       .end((err, res) => {
-        res.should.have.property('status').eql(400);
+        res.should.have.property('status').eql(404);
         res.body.should.be.a('object');
         done();
       });
@@ -405,18 +546,19 @@ describe('property routes test', () => {
     chai.request(app)
       .patch('/api/v1/property/12/sold')
       .send(property)
+      .set({token:userToken})
       .end((error, res) => {
         res.should.have.property('status').eql(400);
         if (error) done(error);
-        res.body.should.have.property('error');
+        res.body.should.have.property('errors');
         done();
       });
   });
   
- 
   it('it should be able to Delete a property', (done) => {
     chai.request(app)
-      .delete('/api/v1/property/1')
+      .delete('/api/v1/property/4')
+      .set({token:userToken})
       .end((err, res) => {
         res.should.have.property('status').eql(200);
         res.body.should.be.a('object');
@@ -424,11 +566,33 @@ describe('property routes test', () => {
       });
   });
 
-  it('it should not be able to Delete a property', (done) => {
+  it('it should be able to Delete a property with invalid id', (done) => {
     chai.request(app)
-      .delete('/api/v1/property/21')
+      .delete('/api/v1/property/yryr')
+      .set({token:userToken})
       .end((err, res) => {
         res.should.have.property('status').eql(400);
+        res.body.should.be.a('object');
+        done();
+      });
+  });
+
+   it('it should not be able to Delete a property', (done) => {
+    chai.request(app)
+      .delete('/api/v1/property/21')
+      .set({token:userToken})
+      .end((err, res) => {
+        res.should.have.property('status').eql(404);
+        res.body.should.be.a('object');
+        done();
+      });
+  });
+  it('it should not be able to Delete a property with authorized user', (done) => {
+    chai.request(app)
+      .delete('/api/v1/property/4')
+      .set({ token:aunthorizedToken})
+      .end((err, res) => {
+        res.should.have.property('status').eql(403);
         res.body.should.be.a('object');
         done();
       });

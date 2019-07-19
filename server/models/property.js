@@ -1,56 +1,77 @@
 import moment from 'moment';
+import queries from '../db/queries';
+import execute from '../src/connection';
+
 // Define a class for creating a property
 class Property {
-  constructor() {
-    this.properties = [];
-  }
   
   // Fetch type
-  findall(query={}) {
+  async findall(query={}) {
     if(query.type){
-    const propertytype = this.properties.find(oneproperty => oneproperty.type ===query.type);
+    const propertytype = await execute(queries.findtype,[query.type]);
     return propertytype;
     }
     
   }
 
+  async update(type,price,image_url,id) {
+    const propertytype = await execute(queries.updateproperty,[type,price,image_url,id]);
+    return propertytype;
+   
+  }
+  async findproperty(destription) {
+    const property = await execute(queries.checkpro,[destription]);
+    return property;
+   
+  }
+
+
+  async MarkAsSold(status,id) {
+    const sold = await execute(queries.mark,[status,id]);
+    return sold;
+   
+  }
   // Fetch Property by id
-  findOne(PropertyId) {
-    const foundproperty = this.properties.find(property => property.id === parseInt(PropertyId));
+  async findOne(PropertyId) {
+    const foundproperty = await execute(queries.findoneproperty,[PropertyId]);
     return foundproperty;
   }
 
   //fecth a property to delete
-  
-  findproperty(propertyid) {
-    const property = this.properties.findIndex(property => property.id === parseInt(propertyid));
-    return property;
-    
+  async deleteproperty(id) {
+    const deletedprop =  await execute(queries.deletepro,[id]);
+    return deletedprop;
   }
 
-  deleteproperty(id) {
-    const findproperty = this.findOne(id);
-    const indexof = this.properties.indexOf(findproperty);
-    const deletedproperty = this.properties.splice(indexof, 1);
-    return deletedproperty;
-  }
-
-  createproperty(data,userInfo,url) {
+  async createproperty(data,userInfo,url) {
     const insertproperty = {
-      id: this.properties.length + 1,
       created_On: moment.utc().format('DD-MM-YYYY HH:mm:ss'),
       owner: userInfo.id,
-      ownerPhoneNumber: userInfo.PhoneNumber,
+      ownerPhoneNumber: userInfo.phonenumber,
       ownerEmail: userInfo.email,
       status:'available',
       type: data.type,
       city: data.city,
       address: data.address,
       price: data.price,
-      image_url:url.image_url, 
+      description:data.description,
+      image_url: url.image_url, 
     };
-    this.properties.push(insertproperty);
-    return insertproperty;
+    const insert = await execute(queries.insertproperty, [
+      insertproperty.created_On,
+      insertproperty. owner,
+      insertproperty.ownerPhoneNumber,
+      insertproperty.ownerEmail,
+      insertproperty.status,
+      insertproperty.type,
+      insertproperty.city,
+      insertproperty.address,
+      insertproperty.price,
+      insertproperty.description, 
+      insertproperty.image_url,  
+    ]);
+    return insert;
+    
   }
 }
 

@@ -1,98 +1,108 @@
 import joi from 'joi';
-import flags from '../models/flags';
 import Schema from '../helpers/inputvalidation';
 import model from '../models/property';
+import queries from '../db/queries';
+import execute from '../src/connection';
 import flag from '../models/flags';
-
-
+import response from '../helpers/response';
 class flagsController {
 
-  static getflags(req, res) {
-    return res.status(200).json({
-      status: 200,
-      message: 'List of all flags',
-      flags,
-    });
+  static async getflags(req, res) {
+    const flags = await execute(queries.getall);
+    return response.success(res,200,'List of all flags',flags)  
   }
-  
   // create flag function
-
-  static createflags(req, res) {
+  static async createflags(req, res) {
     const { property_id } = req.params;
     const { reason,description} = req.body;
-    const { error, value } = joi.validate(
+    const { error} = joi.validate(
       {
-        reason,description,
+        reason,description,property_id,
       },
-      Schema.flagSchema,
-    );
-    if (error) {
-      res.status(400).send({ error: error.details[0].message });
-    } else {
-      const getproperty = model.findOne(property_id);
-      if (getproperty) {
-        if (getproperty.status=='sold') {
-          return res.status(400).json({
-            status: 400,
-            message: 'this property have been sold !',
-          });
-          
+      Schema.flagSchema, { abortEarly: false },
+      );
+      const arrErrors = [];
+      const Validatelist = () => {
+        for (let i = 0; i < error.details.length; i++) {
+          arrErrors.push(error.details[i].message);
         }
-        const createdflag = flag.createRepayments(req.body, property_id);
-        return res.status(200).json({
-          status: 200,
-          message: 'your flag have submit successfully ',
-          createdflag,
-        });
+      };
+      if (error) {
+        `${Validatelist()}`;
+        if (error) return res.status(400).json({ status: 400, errors: arrErrors });
+      }  else {
+      const getproperty = await model.findOne(property_id);
+      if (getproperty.length!=0) {
+        if (getproperty[0].status=='sold') {
+          return response.error(res,400,'this property have been sold !')
+        }
+        const createdflag = await flag.createflag(req.body, property_id);
+        return response.success(res,200,'your flag have submit successfully ',createdflag)
       }
       else{
-      return res.status(400).json({
-        status: 400,
-        message: "that property doesn't exist",
-      });
+        return response.error(res,404,"that property doesn't exist")
+      
     }
   }
 }
   
   // get property flag by id
-  static getOneflag(req, res) {
-    const { id } = req.params;
-    const getflag = flag.findOneflags(id);
-    if (getflag.length>=1) {
-       return res.status(200).json({
-        status:200, 
-        message: 'flag found',
-        getflag,
-      });
+  static async getOneflag(req, res) {
+    const { ID } = req.params;
+    const { error} = joi.validate(
+      {
+        ID,
+      },
+      Schema.parmSchema, { abortEarly: false },
+      );
+      const arrErrors = [];
+      const Validatelist = () => {
+        for (let i = 0; i < error.details.length; i++) {
+          arrErrors.push(error.details[i].message);
+        }
+      };
+      if (error) {
+        `${Validatelist()}`;
+        if (error) return res.status(400).json({ status: 400, errors: arrErrors });
+      } else{
+    const getflag = await flag.findOneflags(ID);
+    if (getflag.length!=0) {
+      return response.success(res,200,'flag found',getflag)
     }
     else{
-    res.status(400).json({
-      status: 400,
-      error: 'no flag found with that property id',
-    });
+     return response.error(res,404,"no flag found with that property id")
+  
   }
+}
 }
 
 // get flag by id
-static Oneflag(req, res) {
-  const { id } = req.params;
-  const findflag = flag.getOne(id);
+static async Oneflag(req, res) {
+  const { ID } = req.params;
+  const { error} = joi.validate(
+    {
+      ID,
+    },
+    Schema.parmSchema, { abortEarly: false },
+    );
+    const arrErrors = [];
+    const Validatelist = () => {
+      for (let i = 0; i < error.details.length; i++) {
+        arrErrors.push(error.details[i].message);
+      }
+    };
+    if (error) {
+      `${Validatelist()}`;
+      if (error) return res.status(400).json({ status: 400, errors: arrErrors });
+    } else{
+  const findflag = await flag.getOne(ID);
 
-  if (findflag) {
-    return res.status(200).json({
-      status: 200,
-      message: 'flag found',
-      findflag,
-    });
+  if (findflag.length!=0) {
+    return response.success(res,200,'flag found',findflag)
   }
-  res.status(400).json({
-    status: 400,
-    error: 'could not find that flag',
-  });
-  
+  return response.error(res,404,"could not find that flag")
 }
-
-
+}
 }
 
 

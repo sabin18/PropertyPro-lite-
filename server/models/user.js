@@ -1,36 +1,25 @@
-
+import queries from '../db/queries';
+import execute from '../src/connection';
 import passwordHash from 'password-hash';
 
 // Define a class for creating a user
 class user {
-  constructor() {
-    this.users = [
 
-     {
-    id: 1,
-    email: 'mugabe@gmail.com',
-    firstname: 'kwizera',
-    lastname: 'kivin',
-    password: 'sha1$db1129e7$1$14d8764a1910de685c04cefc47bd265667780921',
-    address: 'kigali',
-    PhoneNumber:'0789765444',
-    status: 'Not login',
-    isadmin: 'true',
-     }
-    ];
-  }
-
-  userEmail(data) {
-    const findemail = this.users.find(oneusers => oneusers.email === data);
+  async userEmail(data) {
+    const findemail = await execute(queries.checkuser,[data]);
     return findemail;
   }
   
-  signupuser(info) {
+  async getusers() {
+    const users = await execute(queries.alluser);
+    return users;
+  }
+  
+ async signupuser(info) {
     const insertuser = {
-      id: this.users.length + 1,
       firstname: info.firstname,
       lastname: info.lastname,
-      PhoneNumber:info.PhoneNumber,
+      PhoneNumber:info.phonenumber,
       email: info.email,
       password:this.setPassword(info.password),
       address : info.address,
@@ -39,8 +28,18 @@ class user {
   
 
     };
-    this.users.push(insertuser);
-    return insertuser;
+    const insertuserdata = await execute(queries.insertuser, [
+      insertuser.email,
+      insertuser.firstname,
+      insertuser.lastname,
+      insertuser.PhoneNumber,
+      insertuser.password,
+      insertuser.address,
+      insertuser.status,
+      insertuser.isadmin,
+           
+    ]);
+    return insertuserdata;
   }
 
   // define a function to hash the password.
@@ -49,8 +48,9 @@ class user {
     // hash the password
     return (this.password = hashedPassword);
   }
-  getuser(id) {
-    const finduser = this.users.find(fetchusers => fetchusers.id == id);
+ 
+  async getuser(id) { 
+    const finduser = await execute(queries.findoneuser,[id]);
     return finduser;
   }
 
