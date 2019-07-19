@@ -253,7 +253,7 @@ class PropertyController {
             return response.error(res,403,"you are not allowed to delete this property")
           }
           else{
-      model.deleteproperty(ID);
+     await model.deleteproperty(ID);
       return response.success(res,200,"property successfully deleted")
           }
     } else {
