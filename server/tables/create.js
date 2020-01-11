@@ -49,6 +49,6 @@ const tables = `
 
 
 sqlQueries.tables = tables;
- execute(tables);
+execute(tables);
 
- export default sqlQueries;
+export default sqlQueries;

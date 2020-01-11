@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable consistent-return */
 import dotenv from 'dotenv';
 import { Pool } from 'pg';
 import '@babel/polyfill';
@@ -7,17 +9,16 @@ dotenv.config();
 // instantiate the connection string
 // const connectionString
 let pool;
-if(process.env.NODE_ENV==='production'){
-  pool=new Pool({connectionString: process.env.DATABASE_URL});
+if (process.env.NODE_ENV === 'production') {
+  pool = new Pool({ connectionString: process.env.DATABASE_URL });
 }
 
-if(process.env.NODE_ENV==='test'){
-
-  pool=new Pool({connectionString:process.env.DATABASE_TEST_URL});
-}else{
-  pool = new Pool({connectionString: process.env.DATABASE_URL});
+if (process.env.NODE_ENV === 'test') {
+  pool = new Pool({ connectionString: process.env.DATABASE_TEST_URL });
+} else {
+  pool = new Pool({ connectionString: process.env.DATABASE_URL });
 }
-console.log('=================== environment variables======');
+console.log('===========environment variables======');
 console.log(process.env.NODE_ENV);
 const connect = async () => pool.connect();
 // use async for a function that will have to wait for another one to complete.

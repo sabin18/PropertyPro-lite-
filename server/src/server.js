@@ -2,14 +2,18 @@ import express from 'express';
 import router from '../routes/routes';
 import dotenv from "dotenv";
 import _ from 'lodash'
+import cors from 'cors';
 dotenv.config();
 
 const app = express();
 
 app.use(express.urlencoded({ extended:false }));
 app.use(express.json());
+app.use(cors());
 
 app.use(router);
+
+console.log(process.env.DATABASE_URL);
     
 app.get('/', (req, res) => {
     res.status(200).json({
